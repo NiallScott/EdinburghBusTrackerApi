@@ -16,14 +16,28 @@
 
 package uk.org.rivernile.edinburghbustrackerapi.disruptions;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class Disruptions {
 
     private List<Disruption> disruptions;
+    @SerializedName("faultcode")
+    private String faultCode;
+    @SerializedName("faultstring")
+    private String faultString;
 
     public List<Disruption> getDisruptions() {
         return disruptions;
+    }
+
+    public String getFaultCode() {
+        return faultCode;
+    }
+
+    public String getFaultString() {
+        return faultString;
     }
 
     @Override
@@ -38,18 +52,32 @@ public class Disruptions {
 
         final Disruptions that = (Disruptions) o;
 
-        return disruptions != null ? disruptions.equals(that.disruptions) : that.disruptions == null;
+        if (disruptions != null ? !disruptions.equals(that.disruptions) : that.disruptions != null) {
+            return false;
+        }
+
+        if (faultCode != null ? !faultCode.equals(that.faultCode) : that.faultCode != null) {
+            return false;
+        }
+
+        return faultString != null ? faultString.equals(that.faultString) : that.faultString == null;
     }
 
     @Override
     public int hashCode() {
-        return disruptions != null ? disruptions.hashCode() : 0;
+        int result = disruptions != null ? disruptions.hashCode() : 0;
+        result = 31 * result + (faultCode != null ? faultCode.hashCode() : 0);
+        result = 31 * result + (faultString != null ? faultString.hashCode() : 0);
+
+        return result;
     }
 
     @Override
     public String toString() {
         return "Disruptions{" +
                 "disruptions=" + disruptions +
+                ", faultCode='" + faultCode + '\'' +
+                ", faultString='" + faultString + '\'' +
                 '}';
     }
 }

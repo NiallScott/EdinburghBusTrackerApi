@@ -16,6 +16,8 @@
 
 package uk.org.rivernile.edinburghbustrackerapi.diversionpoints;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class DiversionPoints {
@@ -23,6 +25,10 @@ public class DiversionPoints {
     private String diversionId;
     private String operatorId;
     private List<ServicePoint> diversionPoints;
+    @SerializedName("faultcode")
+    private String faultCode;
+    @SerializedName("faultstring")
+    private String faultString;
 
     public String getDiversionId() {
         return diversionId;
@@ -34,6 +40,14 @@ public class DiversionPoints {
 
     public List<ServicePoint> getDiversionPoints() {
         return diversionPoints;
+    }
+
+    public String getFaultCode() {
+        return faultCode;
+    }
+
+    public String getFaultString() {
+        return faultString;
     }
 
     @Override
@@ -56,7 +70,15 @@ public class DiversionPoints {
             return false;
         }
 
-        return diversionPoints != null ? diversionPoints.equals(that.diversionPoints) : that.diversionPoints == null;
+        if (diversionPoints != null ? !diversionPoints.equals(that.diversionPoints) : that.diversionPoints != null) {
+            return false;
+        }
+
+        if (faultCode != null ? !faultCode.equals(that.faultCode) : that.faultCode != null) {
+            return false;
+        }
+
+        return faultString != null ? faultString.equals(that.faultString) : that.faultString == null;
     }
 
     @Override
@@ -64,6 +86,8 @@ public class DiversionPoints {
         int result = diversionId != null ? diversionId.hashCode() : 0;
         result = 31 * result + (operatorId != null ? operatorId.hashCode() : 0);
         result = 31 * result + (diversionPoints != null ? diversionPoints.hashCode() : 0);
+        result = 31 * result + (faultCode != null ? faultCode.hashCode() : 0);
+        result = 31 * result + (faultString != null ? faultString.hashCode() : 0);
 
         return result;
     }
@@ -74,6 +98,8 @@ public class DiversionPoints {
                 "diversionId='" + diversionId + '\'' +
                 ", operatorId='" + operatorId + '\'' +
                 ", diversionPoints=" + diversionPoints +
+                ", faultCode='" + faultCode + '\'' +
+                ", faultString='" + faultString + '\'' +
                 '}';
     }
 }

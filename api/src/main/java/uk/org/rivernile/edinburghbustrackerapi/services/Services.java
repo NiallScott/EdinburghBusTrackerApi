@@ -16,14 +16,28 @@
 
 package uk.org.rivernile.edinburghbustrackerapi.services;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class Services {
 
     private List<Service> services;
+    @SerializedName("faultcode")
+    private String faultCode;
+    @SerializedName("faultstring")
+    private String faultString;
 
     public List<Service> getServices() {
         return services;
+    }
+
+    public String getFaultCode() {
+        return faultCode;
+    }
+
+    public String getFaultString() {
+        return faultString;
     }
 
     @Override
@@ -38,18 +52,32 @@ public class Services {
 
         final Services services1 = (Services) o;
 
-        return services != null ? services.equals(services1.services) : services1.services == null;
+        if (services != null ? !services.equals(services1.services) : services1.services != null) {
+            return false;
+        }
+
+        if (faultCode != null ? !faultCode.equals(services1.faultCode) : services1.faultCode != null) {
+            return false;
+        }
+
+        return faultString != null ? faultString.equals(services1.faultString) : services1.faultString == null;
     }
 
     @Override
     public int hashCode() {
-        return services != null ? services.hashCode() : 0;
+        int result = services != null ? services.hashCode() : 0;
+        result = 31 * result + (faultCode != null ? faultCode.hashCode() : 0);
+        result = 31 * result + (faultString != null ? faultString.hashCode() : 0);
+
+        return result;
     }
 
     @Override
     public String toString() {
         return "Services{" +
                 "services=" + services +
+                ", faultCode='" + faultCode + '\'' +
+                ", faultString='" + faultString + '\'' +
                 '}';
     }
 }

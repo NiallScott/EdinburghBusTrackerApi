@@ -16,10 +16,16 @@
 
 package uk.org.rivernile.edinburghbustrackerapi.topoid;
 
+import com.google.gson.annotations.SerializedName;
+
 public class TopoId {
 
     private String topoId;
     private String operatorId;
+    @SerializedName("faultcode")
+    private String faultCode;
+    @SerializedName("faultstring")
+    private String faultString;
 
     public String getTopoId() {
         return topoId;
@@ -27,6 +33,14 @@ public class TopoId {
 
     public String getOperatorId() {
         return operatorId;
+    }
+
+    public String getFaultCode() {
+        return faultCode;
+    }
+
+    public String getFaultString() {
+        return faultString;
     }
 
     @Override
@@ -39,19 +53,29 @@ public class TopoId {
             return false;
         }
 
-        final TopoId that = (TopoId) o;
+        final TopoId topoId1 = (TopoId) o;
 
-        if (topoId != null ? !topoId.equals(that.topoId) : that.topoId != null) {
+        if (topoId != null ? !topoId.equals(topoId1.topoId) : topoId1.topoId != null) {
             return false;
         }
 
-        return operatorId != null ? operatorId.equals(that.operatorId) : that.operatorId == null;
+        if (operatorId != null ? !operatorId.equals(topoId1.operatorId) : topoId1.operatorId != null) {
+            return false;
+        }
+
+        if (faultCode != null ? !faultCode.equals(topoId1.faultCode) : topoId1.faultCode != null) {
+            return false;
+        }
+
+        return faultString != null ? faultString.equals(topoId1.faultString) : topoId1.faultString == null;
     }
 
     @Override
     public int hashCode() {
         int result = topoId != null ? topoId.hashCode() : 0;
         result = 31 * result + (operatorId != null ? operatorId.hashCode() : 0);
+        result = 31 * result + (faultCode != null ? faultCode.hashCode() : 0);
+        result = 31 * result + (faultString != null ? faultString.hashCode() : 0);
 
         return result;
     }
@@ -61,6 +85,8 @@ public class TopoId {
         return "TopoId{" +
                 "topoId='" + topoId + '\'' +
                 ", operatorId='" + operatorId + '\'' +
+                ", faultCode='" + faultCode + '\'' +
+                ", faultString='" + faultString + '\'' +
                 '}';
     }
 }

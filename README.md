@@ -11,6 +11,16 @@ This library is based on [Retrofit 2](https://square.github.io/retrofit/) and
 
 This library is guaranteed to work on Android.
 
+Accessing the API
+-----------------
+
+This is an unofficial library used to access the API. As such, the maintainer is unable to help you gain access.
+
+However, the official place to request an API key is here: http://mybustracker.co.uk/?page=API%20Key
+
+Please don't contact the library maintainer for help accessing the API - I am unable to help beyond what's written in
+this README.
+
 Usage examples
 --------------
 
@@ -61,8 +71,13 @@ try {
 
     if (response.isSuccessful()) {
         final TopoId topoId = response.body();
-        // Now do whatever you want to do with this object, i.e. call some method.
-        doOnTopoIdLoaded(topoId);
+        
+        if (topoId.getTopoId() != null) {
+            // Now do whatever you want to do with this object, i.e. call some method.
+            doOnTopoIdLoaded(topoId.getTopoId());
+        } else {
+            handleError(topoId.getFaultCode());
+        }
     } else {
         // Handle error here
     }
@@ -75,18 +90,106 @@ try {
 // Get bus times
 try {
     // Request 4 departures for each service at stop with code "123456".
-    final Response<BusTimes> response = api.getBusTimes(apiKeyForRequest, 4, "123456");
+    final Response<BusTimes> response = api.getBusTimes(apiKeyForRequest, 4, "123456").execute();
     
     if (response.isSuccessful()) {
         final BusTimes busTimes = response.body();
-        // Now do whatever you want to do with this object, i.e. call some method.
-        doOnBusTimesLoaded(busTimes);
+        
+        if (busTimes.getBusTimes() != null) {
+            // Now do whatever you want to do with this object, i.e. call some method.
+            doOnBusTimesLoaded(busTimes);
+        } else {
+            handleError(busTimes.getFaultCode());
+        }
     } else {
         // Handle error here.
     }
 } catch (IOException e) {
     // Deal with the thrown IOException.
 }
+```
+
+Error handling
+--------------
+
+Unfortunately, the Edinburgh Bus Tracker API is not strictly RESTful. All responses from the API are returned as HTTP
+200 OK, regardless if the request succeeded or failed. This means that the response types returned from the methods in
+the `EdinburghBusTrackerApi` interface return model objects which encapsulate both success and failure cases.
+
+All of these root model objects (such as `BusTimes`, `BusStops` etc) contain two methods;
+
+- `getFaultCode()`: A string constant defining the error type. See the `FaultCode` class for the enumeration of these
+  errors. This class also has a method, `convertFromString(String)` to convert the error in to its friendly enum type.
+- `getFaultString()`: A string to describe the error in more detail. This may help during development or debugging to
+  work out the root cause of the error. However, these errors are unfriendly to show to end users.
+  
+There's a few classes of errors to be aware of;
+
+- You may receive an `IOException`. This means a network-level error has occurred. This should be handled appropriately.
+- The `Response` object provided to you by Retrofit may return `false` when `Request.isSuccessful()` has been called.
+  This would be unexpected given that the API returns `200 OK` for all responses, as discussed above. This should still
+  be called as this could possibly be the case, and your implementation should guard against this. It is unlikely to
+  yield any interesting information to debug with. It is possible this behaviour may be changed in the future. As such,
+  this library will be updated when it does.
+- The `getFaultCode()` method, as discussed above, may be non-`null`. This should be handled.
+
+Using the synchronous access method for Retrofit, your typical error handling may look like this;
+
+```java
+// Get bus times
+try {
+    // Request 4 departures for each service at stop with code "123456".
+    final Response<BusTimes> response = api.getBusTimes(apiKeyForRequest, 4, "123456").execute();
+    
+    if (response.isSuccessful()) {
+        final BusTimes busTimes = response.body();
+        final String faultCode = busTimes.getFaultCode();
+        
+        if (faultCode == null) {
+            // Now do whatever you want to do with this object, i.e. call some method.
+            doOnBusTimesLoaded(busTimes);
+        } else {
+            handleApiError(faultCode);
+        }
+    } else {
+        // This isn't really expected, so perhaps handle it generically? It's up to you.
+        handleGenericError();
+    }
+} catch (IOException e) {
+    // This is called when a network-level error has occurred. This should be handled.
+    handleIoError(e);
+}
+```
+
+And the asynchronous method;
+
+```java
+// Get bus times
+api.getBusTimes(apiKeyForRequest, 4, "123456").enqueue(new Callback<BusTimes>() {
+    @Override
+    public void onResponse(final Call<BusTimes> call, final Response<BusTimes> response) {
+        if (response.isSuccessful()) {
+            final BusTimes busTimes = response.body();
+            final String faultCode = busTimes.getFaultCode();
+            
+            if (faultCode == null) {
+                // Now do whatever you want to do with this object, i.e. call some method.
+                doOnBusTimesLoaded(busTimes);
+            } else {
+                handleApiError(faultCode);
+            }
+        } else {
+            // This isn't really expected, so perhaps handle it generically? It's up to you.
+            handleGenericError();
+        }
+    }
+    
+    @Override
+    public void onFailure(final Call<BusTimes> call, final Throwable t) {
+        // This is called when a network-level or system error has occurred. This should be handled.
+        handleThrowable(t);
+    }
+});
 ```
 
 Java version

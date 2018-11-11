@@ -16,14 +16,28 @@
 
 package uk.org.rivernile.edinburghbustrackerapi.diversions;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class Diversions {
 
     private List<Diversion> diversions;
+    @SerializedName("faultcode")
+    private String faultCode;
+    @SerializedName("faultstring")
+    private String faultString;
 
     public List<Diversion> getDiversions() {
         return diversions;
+    }
+
+    public String getFaultCode() {
+        return faultCode;
+    }
+
+    public String getFaultString() {
+        return faultString;
     }
 
     @Override
@@ -38,18 +52,32 @@ public class Diversions {
 
         final Diversions that = (Diversions) o;
 
-        return diversions != null ? diversions.equals(that.diversions) : that.diversions == null;
+        if (diversions != null ? !diversions.equals(that.diversions) : that.diversions != null) {
+            return false;
+        }
+
+        if (faultCode != null ? !faultCode.equals(that.faultCode) : that.faultCode != null) {
+            return false;
+        }
+
+        return faultString != null ? faultString.equals(that.faultString) : that.faultString == null;
     }
 
     @Override
     public int hashCode() {
-        return diversions != null ? diversions.hashCode() : 0;
+        int result = diversions != null ? diversions.hashCode() : 0;
+        result = 31 * result + (faultCode != null ? faultCode.hashCode() : 0);
+        result = 31 * result + (faultString != null ? faultString.hashCode() : 0);
+
+        return result;
     }
 
     @Override
     public String toString() {
         return "Diversions{" +
                 "diversions=" + diversions +
+                ", faultCode='" + faultCode + '\'' +
+                ", faultString='" + faultString + '\'' +
                 '}';
     }
 }

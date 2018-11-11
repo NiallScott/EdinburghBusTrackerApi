@@ -16,14 +16,28 @@
 
 package uk.org.rivernile.edinburghbustrackerapi.journeytimes;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class JourneyTimes {
 
     private List<JourneyTime> journeyTimes;
+    @SerializedName("faultcode")
+    private String faultCode;
+    @SerializedName("faultstring")
+    private String faultString;
 
     public List<JourneyTime> getJourneyTimes() {
         return journeyTimes;
+    }
+
+    public String getFaultCode() {
+        return faultCode;
+    }
+
+    public String getFaultString() {
+        return faultString;
     }
 
     @Override
@@ -38,18 +52,32 @@ public class JourneyTimes {
 
         final JourneyTimes that = (JourneyTimes) o;
 
-        return journeyTimes != null ? journeyTimes.equals(that.journeyTimes) : that.journeyTimes == null;
+        if (journeyTimes != null ? !journeyTimes.equals(that.journeyTimes) : that.journeyTimes != null) {
+            return false;
+        }
+
+        if (faultCode != null ? !faultCode.equals(that.faultCode) : that.faultCode != null) {
+            return false;
+        }
+
+        return faultString != null ? faultString.equals(that.faultString) : that.faultString == null;
     }
 
     @Override
     public int hashCode() {
-        return journeyTimes != null ? journeyTimes.hashCode() : 0;
+        int result = journeyTimes != null ? journeyTimes.hashCode() : 0;
+        result = 31 * result + (faultCode != null ? faultCode.hashCode() : 0);
+        result = 31 * result + (faultString != null ? faultString.hashCode() : 0);
+
+        return result;
     }
 
     @Override
     public String toString() {
         return "JourneyTimes{" +
                 "journeyTimes=" + journeyTimes +
+                ", faultCode='" + faultCode + '\'' +
+                ", faultString='" + faultString + '\'' +
                 '}';
     }
 }

@@ -16,14 +16,28 @@
 
 package uk.org.rivernile.edinburghbustrackerapi.destinations;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class Destinations {
 
     private List<Destination> dests;
+    @SerializedName("faultcode")
+    private String faultCode;
+    @SerializedName("faultstring")
+    private String faultString;
 
     public List<Destination> getDestinations() {
         return dests;
+    }
+
+    public String getFaultCode() {
+        return faultCode;
+    }
+
+    public String getFaultString() {
+        return faultString;
     }
 
     @Override
@@ -38,18 +52,32 @@ public class Destinations {
 
         final Destinations that = (Destinations) o;
 
-        return dests != null ? dests.equals(that.dests) : that.dests == null;
+        if (dests != null ? !dests.equals(that.dests) : that.dests != null) {
+            return false;
+        }
+
+        if (faultCode != null ? !faultCode.equals(that.faultCode) : that.faultCode != null) {
+            return false;
+        }
+
+        return faultString != null ? faultString.equals(that.faultString) : that.faultString == null;
     }
 
     @Override
     public int hashCode() {
-        return dests != null ? dests.hashCode() : 0;
+        int result = dests != null ? dests.hashCode() : 0;
+        result = 31 * result + (faultCode != null ? faultCode.hashCode() : 0);
+        result = 31 * result + (faultString != null ? faultString.hashCode() : 0);
+
+        return result;
     }
 
     @Override
     public String toString() {
         return "Destinations{" +
                 "dests=" + dests +
+                ", faultCode='" + faultCode + '\'' +
+                ", faultString='" + faultString + '\'' +
                 '}';
     }
 }

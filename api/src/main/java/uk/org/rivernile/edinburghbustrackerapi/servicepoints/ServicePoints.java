@@ -16,6 +16,8 @@
 
 package uk.org.rivernile.edinburghbustrackerapi.servicepoints;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class ServicePoints {
@@ -23,6 +25,10 @@ public class ServicePoints {
     private String ref;
     private String operatorId;
     private List<ServicePoint> servicePoints;
+    @SerializedName("faultcode")
+    private String faultCode;
+    @SerializedName("faultstring")
+    private String faultString;
 
     public String getRef() {
         return ref;
@@ -34,6 +40,14 @@ public class ServicePoints {
 
     public List<ServicePoint> getServicePoints() {
         return servicePoints;
+    }
+
+    public String getFaultCode() {
+        return faultCode;
+    }
+
+    public String getFaultString() {
+        return faultString;
     }
 
     @Override
@@ -56,7 +70,15 @@ public class ServicePoints {
             return false;
         }
 
-        return servicePoints != null ? servicePoints.equals(that.servicePoints) : that.servicePoints == null;
+        if (servicePoints != null ? !servicePoints.equals(that.servicePoints) : that.servicePoints != null) {
+            return false;
+        }
+
+        if (faultCode != null ? !faultCode.equals(that.faultCode) : that.faultCode != null) {
+            return false;
+        }
+
+        return faultString != null ? faultString.equals(that.faultString) : that.faultString == null;
     }
 
     @Override
@@ -64,6 +86,8 @@ public class ServicePoints {
         int result = ref != null ? ref.hashCode() : 0;
         result = 31 * result + (operatorId != null ? operatorId.hashCode() : 0);
         result = 31 * result + (servicePoints != null ? servicePoints.hashCode() : 0);
+        result = 31 * result + (faultCode != null ? faultCode.hashCode() : 0);
+        result = 31 * result + (faultString != null ? faultString.hashCode() : 0);
 
         return result;
     }
@@ -74,6 +98,8 @@ public class ServicePoints {
                 "ref='" + ref + '\'' +
                 ", operatorId='" + operatorId + '\'' +
                 ", servicePoints=" + servicePoints +
+                ", faultCode='" + faultCode + '\'' +
+                ", faultString='" + faultString + '\'' +
                 '}';
     }
 }

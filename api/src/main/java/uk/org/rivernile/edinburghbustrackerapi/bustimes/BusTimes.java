@@ -16,14 +16,28 @@
 
 package uk.org.rivernile.edinburghbustrackerapi.bustimes;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class BusTimes {
 
     private List<BusTime> busTimes;
+    @SerializedName("faultcode")
+    private String faultCode;
+    @SerializedName("faultstring")
+    private String faultString;
 
     public List<BusTime> getBusTimes() {
         return busTimes;
+    }
+
+    public String getFaultCode() {
+        return faultCode;
+    }
+
+    public String getFaultString() {
+        return faultString;
     }
 
     @Override
@@ -38,18 +52,32 @@ public class BusTimes {
 
         final BusTimes busTimes1 = (BusTimes) o;
 
-        return busTimes != null ? busTimes.equals(busTimes1.busTimes) : busTimes1.busTimes == null;
+        if (busTimes != null ? !busTimes.equals(busTimes1.busTimes) : busTimes1.busTimes != null) {
+            return false;
+        }
+
+        if (faultCode != null ? !faultCode.equals(busTimes1.faultCode) : busTimes1.faultCode != null) {
+            return false;
+        }
+
+        return faultString != null ? faultString.equals(busTimes1.faultString) : busTimes1.faultString == null;
     }
 
     @Override
     public int hashCode() {
-        return busTimes != null ? busTimes.hashCode() : 0;
+        int result = busTimes != null ? busTimes.hashCode() : 0;
+        result = 31 * result + (faultCode != null ? faultCode.hashCode() : 0);
+        result = 31 * result + (faultString != null ? faultString.hashCode() : 0);
+
+        return result;
     }
 
     @Override
     public String toString() {
         return "BusTimes{" +
                 "busTimes=" + busTimes +
+                ", faultCode='" + faultCode + '\'' +
+                ", faultString='" + faultString + '\'' +
                 '}';
     }
 }
