@@ -25,4 +25,4 @@ jobs:
         - ~/.gradle
         key: v1-dependencies-{{ checksum "build.gradle" }}
 
-    - run: gradle clean :api:assemble :api:test
+    - run: gradle clean :api:assemble :api:test :api:generateJavadoc

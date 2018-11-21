@@ -26,7 +26,6 @@ import uk.org.rivernile.edinburghbustrackerapi.services.Services;
 import uk.org.rivernile.edinburghbustrackerapi.topoid.TopoId;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 public class Main {
@@ -74,7 +73,7 @@ public class Main {
     }
 
     private String getKey() {
-        return keyGenerator.getHashedApiKey(new Date());
+        return keyGenerator.getHashedApiKey();
     }
 
     private void doGetTopoId(final EdinburghBusTrackerApi api) {
@@ -83,10 +82,10 @@ public class Main {
 
             if (response.isSuccessful()) {
                 System.out.println("Success response.");
-                System.out.println(response.body().toString());
+                System.out.println(response.body());
             } else {
                 System.out.println("Failure response.");
-                System.out.println(response.errorBody().string());
+                System.out.println(response.errorBody());
             }
         } catch (IOException e) {
             System.out.println("Failed to talk to server. Error = " + e.toString());
@@ -99,10 +98,10 @@ public class Main {
 
             if (response.isSuccessful()) {
                 System.out.println("Success response.");
-                System.out.println(response.body().toString());
+                System.out.println(response.body());
             } else {
                 System.out.println("Failure response.");
-                System.out.println(response.errorBody().string());
+                System.out.println(response.errorBody());
             }
         } catch (IOException e) {
             System.out.println("Failed to talk to server. Error = " + e.toString());

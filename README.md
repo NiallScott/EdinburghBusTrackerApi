@@ -216,6 +216,39 @@ Javadoc
 
 There is no Javadoc yet. This will become available later.
 
+Public interfaces (and ongoing maintenance)
+-------------------------------------------
+
+Unlike most libraries you will find, this library will not make any attempt to be backwards compatible to any previous
+release. So if the Edinburgh Bus Tracker API changes, then so does this library's public interfaces. This will be
+communicated through the release notes, but not in code or through deprecation annotations.
+
+The reason for this is simple. This library is just a thin layer to access the Edinburgh Bus Tracker API using
+Retrofit/Okhttp. It's designed to map closely to the API itself. If the goal was to maintain backwards compatibility and
+let's say the API changed, then it would create a maintenance headache to keep the backwards compatibility.
+
+In your own codebase, you should have model objects which represent the data you need, and you write mappers between the
+objects/data returned by this library and convert them in to your own model objects. This way, if this library does
+change its public interfaces, you only need to make the change in one place in your codebase, rather than modifying many
+layers.
+
+In terms of ongoing maintenance, it will be endeavoured to update this library as quickly as possible after any
+Edinburgh Bus Tracker API changes have been made, but given this is a free, open source library, there is no obligation
+on the author to do this or do it within a given time.
+
+Project structure
+-----------------
+
+There are two modules in this project;
+
+- `:api`: This is the distributed library.
+- `:playground`: This is a module used to play with the API module to test it out and make sure it works with the
+  Edinburgh Bus Tracker API. It is not distributed with the library.
+  
+In the `:api` module, the top-level package is `uk.org.rivernile.edinburghbustrackerapi`. The classes in this package
+are used as entry-points and utility classes. In the child packages are the model objects returned by the API calls,
+organised in to a child package per API method.
+
 License
 -------
 
