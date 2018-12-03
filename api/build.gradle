@@ -42,3 +42,5 @@ dependencies {
 }
 
 apply from: 'javadoc.gradle'
+apply from: 'package-sources.gradle'
+apply from: '../gradle-mvn-push.gradle'

@@ -14,21 +14,8 @@
  * limitations under the License.
  */
 
-task generateJavadoc(type: Javadoc) {
-    source = sourceSets.main.allJava
-    classpath = sourceSets.main.compileClasspath
-    title = "Edinburgh Bus Tracker API"
-    description "Generate Javadoc"
-
-    options {
-        links("https://docs.oracle.com/javase/8/docs/api/")
-        links("https://google.github.io/gson/apidocs/")
-        links("https://square.github.io/retrofit/2.x/retrofit/")
-    }
-}
-
-task packageJavadoc(type: Jar, dependsOn: generateJavadoc) {
-    description "Package Javadoc as a JAR"
-    classifier = 'javadoc'
-    from generateJavadoc.destinationDir
+task packageSources(type: Jar) {
+    description "Package sources as a JAR"
+    classifier = "sources"
+    from sourceSets.main.allJava
 }
