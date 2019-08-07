@@ -16,15 +16,25 @@
 
 package uk.org.rivernile.edinburghbustrackerapi.bustimes;
 
+import com.google.gson.annotations.SerializedName;
+
 public class TimeData {
 
+    @SerializedName("day")
     private int day;
+    @SerializedName("time")
     private String time;
+    @SerializedName("minutes")
     private int minutes;
+    @SerializedName("reliability")
     private String reliability;
+    @SerializedName("type")
     private String type;
+    @SerializedName("terminus")
     private String terminus;
+    @SerializedName("journeyId")
     private String journeyId;
+    @SerializedName("busId")
     private String busId;
 
     public int getDay() {

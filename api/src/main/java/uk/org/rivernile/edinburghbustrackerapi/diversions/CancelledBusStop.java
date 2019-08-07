@@ -16,11 +16,17 @@
 
 package uk.org.rivernile.edinburghbustrackerapi.diversions;
 
+import com.google.gson.annotations.SerializedName;
+
 public class CancelledBusStop {
 
+    @SerializedName("stopId")
     private String stopId;
+    @SerializedName("stopName")
     private String stopName;
+    @SerializedName("replacedStopId")
     private String replacedStopId;
+    @SerializedName("replacedStopName")
     private String replacedStopName;
 
     public String getStopId() {

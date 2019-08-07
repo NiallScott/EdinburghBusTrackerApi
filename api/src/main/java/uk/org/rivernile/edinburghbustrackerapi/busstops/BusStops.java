@@ -22,6 +22,7 @@ import java.util.List;
 
 public class BusStops {
 
+    @SerializedName("busStops")
     private List<BusStop> busStops;
     @SerializedName("faultcode")
     private String faultCode;

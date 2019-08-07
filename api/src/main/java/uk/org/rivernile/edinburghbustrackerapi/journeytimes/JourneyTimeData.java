@@ -16,16 +16,27 @@
 
 package uk.org.rivernile.edinburghbustrackerapi.journeytimes;
 
+import com.google.gson.annotations.SerializedName;
+
 public class JourneyTimeData {
 
+    @SerializedName("order")
     private int order;
+    @SerializedName("stopId")
     private String stopId;
+    @SerializedName("stopName")
     private String stopName;
+    @SerializedName("day")
     private int day;
+    @SerializedName("time")
     private String time;
+    @SerializedName("minutes")
     private int minutes;
+    @SerializedName("reliability")
     private String reliability;
+    @SerializedName("type")
     private String type;
+    @SerializedName("busStopDisruption")
     private boolean busStopDisruption;
 
     public int getOrder() {

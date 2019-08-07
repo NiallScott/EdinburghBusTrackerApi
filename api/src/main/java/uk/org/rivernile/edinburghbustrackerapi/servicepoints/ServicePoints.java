@@ -22,8 +22,11 @@ import java.util.List;
 
 public class ServicePoints {
 
+    @SerializedName("ref")
     private String ref;
+    @SerializedName("operatorId")
     private String operatorId;
+    @SerializedName("servicePoints")
     private List<ServicePoint> servicePoints;
     @SerializedName("faultcode")
     private String faultCode;

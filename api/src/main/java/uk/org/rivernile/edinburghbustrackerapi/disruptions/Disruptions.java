@@ -22,6 +22,7 @@ import java.util.List;
 
 public class Disruptions {
 
+    @SerializedName("disruptions")
     private List<Disruption> disruptions;
     @SerializedName("faultcode")
     private String faultCode;

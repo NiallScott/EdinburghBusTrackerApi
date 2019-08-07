@@ -22,8 +22,11 @@ import java.util.List;
 
 public class DiversionPoints {
 
+    @SerializedName("diversionId")
     private String diversionId;
+    @SerializedName("operatorId")
     private String operatorId;
+    @SerializedName("diversionPoints")
     private List<ServicePoint> diversionPoints;
     @SerializedName("faultcode")
     private String faultCode;

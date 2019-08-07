@@ -22,6 +22,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import uk.org.rivernile.edinburghbustrackerapi.ApiKeyGenerator;
 import uk.org.rivernile.edinburghbustrackerapi.EdinburghBusTrackerApi;
+import uk.org.rivernile.edinburghbustrackerapi.bustimes.BusTimes;
 import uk.org.rivernile.edinburghbustrackerapi.services.Services;
 import uk.org.rivernile.edinburghbustrackerapi.topoid.TopoId;
 
@@ -47,12 +48,14 @@ public class Main {
     }
 
     private void runPlayground() {
-        System.out.println("Running playground.");
+        final String hashedKey = getKey();
+        System.out.println("Running playground. Hashed key = " + hashedKey);
 
         final EdinburghBusTrackerApi api = createApi();
 
         doGetTopoId(api);
         doGetServices(api);
+        doGetBusTimes(api);
     }
 
     private EdinburghBusTrackerApi createApi() {
@@ -81,10 +84,10 @@ public class Main {
             final Response<TopoId> response = api.getTopoId(getKey(), null).execute();
 
             if (response.isSuccessful()) {
-                System.out.println("Success response.");
+                System.out.println("doGetTopoId(): Success response.");
                 System.out.println(response.body());
             } else {
-                System.out.println("Failure response.");
+                System.out.println("doGetTopoId(): Failure response.");
                 System.out.println(response.errorBody());
             }
         } catch (IOException e) {
@@ -97,10 +100,26 @@ public class Main {
             final Response<Services> response = api.getServices(getKey(), null).execute();
 
             if (response.isSuccessful()) {
-                System.out.println("Success response.");
+                System.out.println("doGetServices(): Success response.");
                 System.out.println(response.body());
             } else {
-                System.out.println("Failure response.");
+                System.out.println("doGetServices(): Failure response.");
+                System.out.println(response.errorBody());
+            }
+        } catch (IOException e) {
+            System.out.println("Failed to talk to server. Error = " + e.toString());
+        }
+    }
+
+    private void doGetBusTimes(final EdinburghBusTrackerApi api) {
+        try {
+            final Response<BusTimes> response = api.getBusTimes(getKey(), 4, "36243252").execute();
+
+            if (response.isSuccessful()) {
+                System.out.println("doGetBusTimes(): Success response.");
+                System.out.println(response.body());
+            } else {
+                System.out.println("doGetBusTimes(): Failure response.");
                 System.out.println(response.errorBody());
             }
         } catch (IOException e) {

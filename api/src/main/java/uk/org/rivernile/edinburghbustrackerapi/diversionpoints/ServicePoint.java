@@ -16,10 +16,15 @@
 
 package uk.org.rivernile.edinburghbustrackerapi.diversionpoints;
 
+import com.google.gson.annotations.SerializedName;
+
 public class ServicePoint {
 
+    @SerializedName("order")
     private int order;
+    @SerializedName("x")
     private double x;
+    @SerializedName("y")
     private double y;
 
     public int getOrder() {

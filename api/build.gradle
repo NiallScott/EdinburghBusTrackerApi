@@ -17,7 +17,7 @@
 apply plugin: 'java'
 
 ext {
-    retrofitVersion = '2.4.0'
+    retrofitVersion = '2.6.1'
 }
 
 jar {
@@ -33,12 +33,12 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:${retrofitVersion}"
 
     // Okhttp
-    implementation 'com.squareup.okhttp3:okhttp:3.11.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.14.1'
 
     // Gson
     implementation 'com.google.code.gson:gson:2.8.5'
 
-    testImplementation 'junit:junit:4.11'
+    testImplementation 'junit:junit:4.12'
 }
 
 apply from: 'javadoc.gradle'

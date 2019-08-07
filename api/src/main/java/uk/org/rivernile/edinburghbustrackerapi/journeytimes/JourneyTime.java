@@ -16,21 +16,35 @@
 
 package uk.org.rivernile.edinburghbustrackerapi.journeytimes;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class JourneyTime {
 
+    @SerializedName("journeyId")
     private String journeyId;
+    @SerializedName("busId")
     private String busId;
+    @SerializedName("operatorId")
     private String operatorId;
+    @SerializedName("refService")
     private String refService;
+    @SerializedName("mnemoService")
     private String mnemoService;
+    @SerializedName("nameService")
     private String nameService;
+    @SerializedName("refDest")
     private String refDest;
+    @SerializedName("nameDest")
     private String nameDest;
+    @SerializedName("journeyTimesDatas")
     private List<JourneyTimeData> journeyTimesDatas;
+    @SerializedName("globalDisruption")
     private boolean globalDisruption;
+    @SerializedName("serviceDisruption")
     private boolean serviceDisruption;
+    @SerializedName("serviceDiversion")
     private boolean serviceDiversion;
 
     public String getJourneyId() {

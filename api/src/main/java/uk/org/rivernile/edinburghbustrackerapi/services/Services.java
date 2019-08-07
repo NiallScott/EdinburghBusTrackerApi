@@ -22,6 +22,7 @@ import java.util.List;
 
 public class Services {
 
+    @SerializedName("services")
     private List<Service> services;
     @SerializedName("faultcode")
     private String faultCode;

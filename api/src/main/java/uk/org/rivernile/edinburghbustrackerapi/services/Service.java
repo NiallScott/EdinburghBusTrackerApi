@@ -16,14 +16,21 @@
 
 package uk.org.rivernile.edinburghbustrackerapi.services;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class Service {
 
+    @SerializedName("ref")
     private String ref;
+    @SerializedName("operatorId")
     private String operatorId;
+    @SerializedName("mnemo")
     private String mnemo;
+    @SerializedName("name")
     private String name;
+    @SerializedName("dests")
     private List<String> dests;
 
     public String getRef() {

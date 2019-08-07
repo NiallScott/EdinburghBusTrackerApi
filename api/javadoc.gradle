@@ -19,6 +19,7 @@ task generateJavadoc(type: Javadoc) {
     classpath = sourceSets.main.compileClasspath
     title = "Edinburgh Bus Tracker API"
     description "Generate Javadoc"
+    group = "Documentation"
 
     options {
         links("https://docs.oracle.com/javase/8/docs/api/")
@@ -29,6 +30,7 @@ task generateJavadoc(type: Javadoc) {
 
 task packageJavadoc(type: Jar, dependsOn: generateJavadoc) {
     description "Package Javadoc as a JAR"
+    group = 'Documentation'
     classifier = 'javadoc'
     from generateJavadoc.destinationDir
 }

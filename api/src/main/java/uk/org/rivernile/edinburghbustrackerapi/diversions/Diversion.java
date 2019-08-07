@@ -16,23 +16,38 @@
 
 package uk.org.rivernile.edinburghbustrackerapi.diversions;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Date;
 import java.util.List;
 
 public class Diversion {
 
+    @SerializedName("ref")
     private String ref;
+    @SerializedName("diversionId")
     private String diversionId;
+    @SerializedName("operatorId")
     private String operatorId;
+    @SerializedName("refService")
     private String refService;
+    @SerializedName("startStopId")
     private String startStopId;
+    @SerializedName("startStopName")
     private String startStopName;
+    @SerializedName("startDate")
     private Date startDate;
+    @SerializedName("endStopId")
     private String endStopId;
+    @SerializedName("endStopName")
     private String endStopName;
+    @SerializedName("endDate")
     private Date endDate;
+    @SerializedName("length")
     private int length;
+    @SerializedName("timeShift")
     private int timeShift;
+    @SerializedName("cancelledBusStops")
     private List<CancelledBusStop> cancelledBusStops;
 
     public String getRef() {

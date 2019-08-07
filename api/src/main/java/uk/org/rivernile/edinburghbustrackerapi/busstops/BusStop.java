@@ -16,18 +16,29 @@
 
 package uk.org.rivernile.edinburghbustrackerapi.busstops;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class BusStop {
 
+    @SerializedName("ref")
     private String ref;
+    @SerializedName("operatorId")
     private String operatorId;
+    @SerializedName("stopId")
     private String stopId;
+    @SerializedName("name")
     private String name;
+    @SerializedName("x")
     private double x;
+    @SerializedName("y")
     private double y;
+    @SerializedName("cap")
     private int cap;
+    @SerializedName("services")
     private List<String> services;
+    @SerializedName("dests")
     private List<String> dests;
 
     public String getRef() {

@@ -22,6 +22,7 @@ import java.util.List;
 
 public class Diversions {
 
+    @SerializedName("diversions")
     private List<Diversion> diversions;
     @SerializedName("faultcode")
     private String faultCode;

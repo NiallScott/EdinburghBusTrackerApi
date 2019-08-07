@@ -16,12 +16,19 @@
 
 package uk.org.rivernile.edinburghbustrackerapi.destinations;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Destination {
 
+    @SerializedName("ref")
     private String ref;
+    @SerializedName("operatorId")
     private String operatorId;
+    @SerializedName("name")
     private String name;
+    @SerializedName("direction")
     private String direction;
+    @SerializedName("service")
     private String service;
 
     public String getRef() {

@@ -20,7 +20,9 @@ import com.google.gson.annotations.SerializedName;
 
 public class TopoId {
 
+    @SerializedName("topoId")
     private String topoId;
+    @SerializedName("operatorId")
     private String operatorId;
     @SerializedName("faultcode")
     private String faultCode;

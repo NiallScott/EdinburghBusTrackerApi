@@ -16,11 +16,17 @@
 
 package uk.org.rivernile.edinburghbustrackerapi.servicepoints;
 
+import com.google.gson.annotations.SerializedName;
+
 public class ServicePoint {
 
+    @SerializedName("chainage")
     private int chainage;
+    @SerializedName("order")
     private int order;
+    @SerializedName("x")
     private double x;
+    @SerializedName("y")
     private double y;
 
     public int getChainage() {

@@ -22,6 +22,7 @@ import java.util.List;
 
 public class Destinations {
 
+    @SerializedName("dests")
     private List<Destination> dests;
     @SerializedName("faultcode")
     private String faultCode;

@@ -16,17 +16,26 @@
 
 package uk.org.rivernile.edinburghbustrackerapi.disruptions;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Date;
 import java.util.List;
 
 public class Disruption {
 
+    @SerializedName("id")
     private String id;
+    @SerializedName("operatorId")
     private String operatorId;
+    @SerializedName("level")
     private int level;
+    @SerializedName("type")
     private int type;
+    @SerializedName("targets")
     private List<String> targets;
+    @SerializedName("validUntil")
     private Date validUntil;
+    @SerializedName("message")
     private String message;
 
     public String getId() {
