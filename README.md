@@ -11,6 +11,21 @@ This library is based on [Retrofit 2](https://square.github.io/retrofit/) and
 
 This library is guaranteed to work on Android.
 
+Obtaining
+---------
+
+This library is available on Maven Central.
+
+```
+Group ID: uk.org.rivernile.edinburghbustrackerapi
+Artifact ID: api
+Version: 1.0.0
+```
+
+For example, to bring the library in as a Gradle dependency;
+
+`implementation 'uk.org.rivernile.edinburghbustrackerapi:api:1.0.0'`
+
 Accessing the API
 -----------------
 
