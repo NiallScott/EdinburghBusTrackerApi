@@ -19,10 +19,10 @@
  *
  * <p>
  *     {@link uk.org.rivernile.edinburghbustrackerapi.journeytimes.JourneyTimes} are obtained from
- *     {@link uk.org.rivernile.edinburghbustrackerapi.EdinburghBusTrackerApi#getJourneyTimes(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.Integer)}.
+ *     {@link uk.org.rivernile.edinburghbustrackerapi.EdinburghBusTrackerApi#getJourneyTimes(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.Integer, java.lang.Integer)}.
  * </p>
  *
  * @author Niall Scott
- * @see uk.org.rivernile.edinburghbustrackerapi.EdinburghBusTrackerApi#getJourneyTimes(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.Integer)
+ * @see uk.org.rivernile.edinburghbustrackerapi.EdinburghBusTrackerApi#getJourneyTimes(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.Integer, java.lang.Integer)
  */
 package uk.org.rivernile.edinburghbustrackerapi.journeytimes;
