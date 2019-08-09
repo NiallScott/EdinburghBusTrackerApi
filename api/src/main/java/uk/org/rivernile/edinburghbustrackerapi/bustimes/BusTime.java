@@ -32,10 +32,8 @@ public class BusTime {
     private String refService;
     @SerializedName("mnemoService")
     private String mnemoService;
-    @SerializedName("refDest")
-    private String refDest;
-    @SerializedName("nameDest")
-    private String nameDest;
+    @SerializedName("nameService")
+    private String nameService;
     @SerializedName("timeDatas")
     private List<TimeData> timeDatas;
     @SerializedName("globalDisruption")
@@ -67,12 +65,8 @@ public class BusTime {
         return mnemoService;
     }
 
-    public String getRefDestination() {
-        return refDest;
-    }
-
-    public String getNameDestination() {
-        return nameDest;
+    public String getNameService() {
+        return nameService;
     }
 
     public List<TimeData> getTimeDatas() {
@@ -143,11 +137,7 @@ public class BusTime {
             return false;
         }
 
-        if (refDest != null ? !refDest.equals(busTime.refDest) : busTime.refDest != null) {
-            return false;
-        }
-
-        if (nameDest != null ? !nameDest.equals(busTime.nameDest) : busTime.nameDest != null) {
+        if (nameService != null ? !nameService.equals(busTime.nameService) : busTime.nameService != null) {
             return false;
         }
 
@@ -161,8 +151,7 @@ public class BusTime {
         result = 31 * result + (stopName != null ? stopName.hashCode() : 0);
         result = 31 * result + (refService != null ? refService.hashCode() : 0);
         result = 31 * result + (mnemoService != null ? mnemoService.hashCode() : 0);
-        result = 31 * result + (refDest != null ? refDest.hashCode() : 0);
-        result = 31 * result + (nameDest != null ? nameDest.hashCode() : 0);
+        result = 31 * result + (nameService != null ? nameService.hashCode() : 0);
         result = 31 * result + (timeDatas != null ? timeDatas.hashCode() : 0);
         result = 31 * result + (globalDisruption ? 1 : 0);
         result = 31 * result + (serviceDisruption ? 1 : 0);
@@ -180,8 +169,7 @@ public class BusTime {
                 ", stopName='" + stopName + '\'' +
                 ", refService='" + refService + '\'' +
                 ", mnemoService='" + mnemoService + '\'' +
-                ", refDest='" + refDest + '\'' +
-                ", nameDest='" + nameDest + '\'' +
+                ", nameService='" + nameService + '\'' +
                 ", timeDatas=" + timeDatas +
                 ", globalDisruption=" + globalDisruption +
                 ", serviceDisruption=" + serviceDisruption +

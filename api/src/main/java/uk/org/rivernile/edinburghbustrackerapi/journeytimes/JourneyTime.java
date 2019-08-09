@@ -38,6 +38,8 @@ public class JourneyTime {
     private String refDest;
     @SerializedName("nameDest")
     private String nameDest;
+    @SerializedName("terminus")
+    private String terminus;
     @SerializedName("journeyTimesDatas")
     private List<JourneyTimeData> journeyTimesDatas;
     @SerializedName("globalDisruption")
@@ -77,6 +79,10 @@ public class JourneyTime {
 
     public String getNameDest() {
         return nameDest;
+    }
+
+    public String getTerminus() {
+        return terminus;
     }
 
     public List<JourneyTimeData> getJourneyTimesDatas() {
@@ -151,6 +157,10 @@ public class JourneyTime {
             return false;
         }
 
+        if (terminus != null ? !terminus.equals(that.terminus) : that.terminus != null) {
+            return false;
+        }
+
         return journeyTimesDatas != null ? journeyTimesDatas.equals(that.journeyTimesDatas)
                 : that.journeyTimesDatas == null;
     }
@@ -165,6 +175,7 @@ public class JourneyTime {
         result = 31 * result + (nameService != null ? nameService.hashCode() : 0);
         result = 31 * result + (refDest != null ? refDest.hashCode() : 0);
         result = 31 * result + (nameDest != null ? nameDest.hashCode() : 0);
+        result = 31 * result + (terminus != null ? terminus.hashCode() : 0);
         result = 31 * result + (journeyTimesDatas != null ? journeyTimesDatas.hashCode() : 0);
         result = 31 * result + (globalDisruption ? 1 : 0);
         result = 31 * result + (serviceDisruption ? 1 : 0);
@@ -184,6 +195,7 @@ public class JourneyTime {
                 ", nameService='" + nameService + '\'' +
                 ", refDest='" + refDest + '\'' +
                 ", nameDest='" + nameDest + '\'' +
+                ", terminus='" + terminus + '\'' +
                 ", journeyTimesDatas=" + journeyTimesDatas +
                 ", globalDisruption=" + globalDisruption +
                 ", serviceDisruption=" + serviceDisruption +

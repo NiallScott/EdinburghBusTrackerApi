@@ -375,15 +375,19 @@ public interface EdinburghBusTrackerApi {
      * @param hashedApiKey The hashed API key. See {@link ApiKeyGenerator}.
      * @param stopId The identifier of the starting stop.
      * @param journeyId The journey ID. Obtainable from the {@code getBusTimes} API call.
+     * @param busId The bus ID. This can be used instead of {@code journeyId}.
      * @param operatorId An optional operator ID to filter by. Pass {@code null} if the filter should not apply.
      * @param day The day offset, between {@code 0} and {@code 3}. Passing {@code null} uses the default value of
      * {@code 0}.
+     * @param mode Controls what type of data is returned.
      * @return A Retrofit {@link Call} object for this API request.
      */
     @GET("?module=json&function=getJourneyTimes")
     Call<JourneyTimes> getJourneyTimes(@Query("key") String hashedApiKey,
                                        @Query("stopId") String stopId,
                                        @Query("journeyId") String journeyId,
+                                       @Query("busId") String busId,
                                        @Query("operatorId") String operatorId,
-                                       @Query("day") Integer day);
+                                       @Query("day") Integer day,
+                                       @Query("mode") Integer mode);
 }

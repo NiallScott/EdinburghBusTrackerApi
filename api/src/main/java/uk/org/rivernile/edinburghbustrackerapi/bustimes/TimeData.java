@@ -20,6 +20,10 @@ import com.google.gson.annotations.SerializedName;
 
 public class TimeData {
 
+    @SerializedName("refDest")
+    private String refDest;
+    @SerializedName("nameDest")
+    private String nameDest;
     @SerializedName("day")
     private int day;
     @SerializedName("time")
@@ -36,6 +40,14 @@ public class TimeData {
     private String journeyId;
     @SerializedName("busId")
     private String busId;
+
+    public String getRefDest() {
+        return refDest;
+    }
+
+    public String getNameDest() {
+        return nameDest;
+    }
 
     public int getDay() {
         return day;
@@ -81,6 +93,14 @@ public class TimeData {
 
         final TimeData timeData = (TimeData) o;
 
+        if (refDest != null ? !refDest.equals(timeData.refDest) : timeData.refDest != null) {
+            return false;
+        }
+
+        if (nameDest != null ? !nameDest.equals(timeData.nameDest) : timeData.nameDest != null) {
+            return false;
+        }
+
         if (day != timeData.day) {
             return false;
         }
@@ -114,7 +134,9 @@ public class TimeData {
 
     @Override
     public int hashCode() {
-        int result = day;
+        int result = refDest != null ? refDest.hashCode() : 0;
+        result = 31 * result + (nameDest != null ? nameDest.hashCode() : 0);
+        result = 31 * result + day;
         result = 31 * result + (time != null ? time.hashCode() : 0);
         result = 31 * result + minutes;
         result = 31 * result + (reliability != null ? reliability.hashCode() : 0);
@@ -129,7 +151,9 @@ public class TimeData {
     @Override
     public String toString() {
         return "TimeData{" +
-                "day=" + day +
+                "refDest='" + refDest + '\'' +
+                ", nameDest='" + nameDest + '\'' +
+                ", day=" + day +
                 ", time='" + time + '\'' +
                 ", minutes=" + minutes +
                 ", reliability='" + reliability + '\'' +
