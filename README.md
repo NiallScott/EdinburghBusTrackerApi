@@ -19,12 +19,12 @@ This library is available on Maven Central.
 ```
 Group ID: uk.org.rivernile.edinburghbustrackerapi
 Artifact ID: api
-Version: 1.0.0
+Version: 1.1.0
 ```
 
 For example, to bring the library in as a Gradle dependency;
 
-`implementation 'uk.org.rivernile.edinburghbustrackerapi:api:1.0.0'`
+`implementation 'uk.org.rivernile.edinburghbustrackerapi:api:1.1.0'`
 
 Accessing the API
 -----------------
