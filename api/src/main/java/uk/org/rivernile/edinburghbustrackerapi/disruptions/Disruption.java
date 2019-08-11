@@ -23,6 +23,14 @@ import java.util.List;
 
 public class Disruption {
 
+    public static final int LEVEL_INFORMATIVE = 1;
+    public static final int LEVEL_MINOR = 2;
+    public static final int LEVEL_MAJOR = 3;
+
+    public static final int TYPE_NETWORK = 1;
+    public static final int TYPE_SERVICE = 2;
+    public static final int TYPE_BUS_STOP = 3;
+
     @SerializedName("id")
     private String id;
     @SerializedName("operatorId")

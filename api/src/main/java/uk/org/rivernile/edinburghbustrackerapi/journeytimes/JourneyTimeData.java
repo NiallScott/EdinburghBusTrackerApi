@@ -20,6 +20,21 @@ import com.google.gson.annotations.SerializedName;
 
 public class JourneyTimeData {
 
+    public static final char RELIABILITY_DELAYED = 'B';
+    public static final char RELIABILITY_DELOCATED = 'D';
+    public static final char RELIABILITY_REAL_TIME_NO_LOW_FLOOR = 'F';
+    public static final char RELIABILITY_REAL_TIME_LOW_FLOOR = 'H';
+    public static final char RELIABILITY_IMMOBILISED = 'I';
+    public static final char RELIABILITY_NEUTRALISED = 'N';
+    public static final char RELIABILITY_RADIO_FAULT = 'R';
+    public static final char RELIABILITY_ESTIMATED_TIME = 'T';
+    public static final char RELIABILITY_DIVERTED = 'V';
+
+    public static final char TYPE_TERMINUS_STOP = 'D';
+    public static final char TYPE_NORMAL_STOP = 'N';
+    public static final char TYPE_PART_ROUTE = 'P';
+    public static final char TYPE_REFERENCE_STOP = 'R';
+
     @SerializedName("order")
     private int order;
     @SerializedName("stopId")

@@ -125,6 +125,27 @@ import uk.org.rivernile.edinburghbustrackerapi.topoid.TopoId;
 public interface EdinburghBusTrackerApi {
 
     /**
+     * Integer constant for {@link #getDisruptions(String, String, Integer)} to specify that all disruptions should be
+     * returned.
+     */
+    int DISRUPTION_TYPE_ALL = 0;
+    /**
+     * Integer constant for {@link #getDisruptions(String, String, Integer)} to specify that only network disruptions
+     * should be returned.
+     */
+    int DISRUPTION_TYPE_NETWORK = 1;
+    /**
+     * Integer constant for {@link #getDisruptions(String, String, Integer)} to specify that only service disruptions
+     * should be returned.
+     */
+    int DISRUPTION_TYPE_SERVICE = 2;
+    /**
+     * Integer constant for {@link #getDisruptions(String, String, Integer)} to specify that only bus stop disruptions
+     * should be returned.
+     */
+    int DISRUPTION_TYPE_BUS_STOP = 3;
+
+    /**
      * Get the current topology ID.
      *
      * @param hashedApiKey The hashed API key. See {@link ApiKeyGenerator}.

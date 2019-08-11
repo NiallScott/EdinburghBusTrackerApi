@@ -20,6 +20,9 @@ import com.google.gson.annotations.SerializedName;
 
 public class Destination {
 
+    public static final char DIRECTION_INBOUND = 'A';
+    public static final char DIRECTION_OUTBOUND = 'R';
+
     @SerializedName("ref")
     private String ref;
     @SerializedName("operatorId")
