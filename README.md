@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/NiallScott/EdinburghBusTrackerApi/tree/master.svg?style=svg)](https://circleci.com/gh/NiallScott/EdinburghBusTrackerApi/tree/master)
+[![GitHub Actions](https://github.com/NiallScott/EdinburghBusTrackerApi/actions/workflows/push-and-pull-request.yml/badge.svg)](https://github.com/NiallScott/EdinburghBusTrackerApi/actions/workflows/push-and-pull-request.yml)
 
 Edinburgh Bus Tracker API (Java)
 ================================
