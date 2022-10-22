@@ -7,7 +7,7 @@ A Java library which provides model objects and a RESTful interface to the Edinb
 ([My Bus Tracker](http://mybustracker.co.uk/)) API.
 
 This library is based on [Retrofit 2](https://square.github.io/retrofit/) and
-[Okhttp 3](http://square.github.io/okhttp/) provided by Square.
+[Okhttp 4](http://square.github.io/okhttp/) provided by Square.
 
 This library is guaranteed to work on Android.
 

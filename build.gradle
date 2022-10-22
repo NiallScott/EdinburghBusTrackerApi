@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Niall Scott
+ * Copyright 2018 - 2022 Niall Scott
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,13 +15,22 @@
  */
 
 buildscript {
+    ext {
+        okhttpVersion = '4.10.0'
+        retrofitVersion = '2.9.0'
+        gsonVersion = '2.9.0'
+
+        // Testing
+        junitVersion = '4.13.2'
+    }
+
     repositories {
-        jcenter()
+        mavenCentral()
     }
 }
 
 allprojects {
     repositories {
-        jcenter()
+        mavenCentral()
     }
 }

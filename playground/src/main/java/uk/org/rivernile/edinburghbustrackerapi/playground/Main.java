@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Niall Scott
+ * Copyright 2018 - 2022 Niall Scott
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Main {
 
-    private ApiKeyGenerator keyGenerator;
+    private final ApiKeyGenerator keyGenerator;
 
     public static void main(final String[] args) {
         final String apiKey = args.length > 0 ? args[0] : null;
@@ -91,7 +91,7 @@ public class Main {
                 System.out.println(response.errorBody());
             }
         } catch (IOException e) {
-            System.out.println("Failed to talk to server. Error = " + e.toString());
+            System.out.println("Failed to talk to server. Error = " + e);
         }
     }
 
@@ -107,7 +107,7 @@ public class Main {
                 System.out.println(response.errorBody());
             }
         } catch (IOException e) {
-            System.out.println("Failed to talk to server. Error = " + e.toString());
+            System.out.println("Failed to talk to server. Error = " + e);
         }
     }
 
@@ -123,7 +123,7 @@ public class Main {
                 System.out.println(response.errorBody());
             }
         } catch (IOException e) {
-            System.out.println("Failed to talk to server. Error = " + e.toString());
+            System.out.println("Failed to talk to server. Error = " + e);
         }
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Niall Scott
+ * Copyright 2018 - 2022 Niall Scott
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,6 @@
 
 apply plugin: 'java'
 
-ext {
-    retrofitVersion = '2.6.1'
-}
-
 jar {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
@@ -29,16 +25,16 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     // Retrofit
-    implementation "com.squareup.retrofit2:retrofit:${retrofitVersion}"
-    implementation "com.squareup.retrofit2:converter-gson:${retrofitVersion}"
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
 
     // Okhttp
-    implementation 'com.squareup.okhttp3:okhttp:3.14.1'
+    implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
 
     // Gson
-    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation "com.google.code.gson:gson:$gsonVersion"
 
-    testImplementation 'junit:junit:4.12'
+    testImplementation "junit:junit:$junitVersion"
 }
 
 apply from: 'javadoc.gradle'

@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Niall Scott
+ * Copyright 2018 - 2022 Niall Scott
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,16 +19,12 @@ apply plugin: 'application'
 
 mainClassName = 'uk.org.rivernile.edinburghbustrackerapi.playground.Main'
 
-ext {
-    retrofitVersion = '2.4.0'
-}
-
 jar {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
 
     manifest {
-        attributes "Main-Class": "$mainClassName"
+        attributes "Main-Class": mainClassName
     }
 }
 
@@ -38,14 +34,14 @@ dependencies {
     implementation project(path: ':api')
 
     // Retrofit
-    implementation "com.squareup.retrofit2:retrofit:${retrofitVersion}"
-    implementation "com.squareup.retrofit2:converter-gson:${retrofitVersion}"
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
 
     // Okhttp
-    implementation 'com.squareup.okhttp3:okhttp:3.11.0'
+    implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
 
     // Gson
-    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation "com.google.code.gson:gson:$gsonVersion"
 
-    testImplementation 'junit:junit:4.11'
+    testImplementation "junit:junit:$junitVersion"
 }
