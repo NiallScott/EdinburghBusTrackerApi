@@ -14,11 +14,104 @@
  * limitations under the License.
  */
 
-apply plugin: 'java'
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    id 'signing'
+}
 
-jar {
+java {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
+    withJavadocJar()
+    withSourcesJar()
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId = POM_ARTIFACT_ID
+            from components.java
+
+            pom {
+                name = POM_NAME
+                packaging = POM_PACKAGING
+                description = POM_DESCRIPTION
+                url = POM_URL
+
+                developers {
+                    developer {
+                        id = POM_DEVELOPER_ID
+                        name = POM_DEVELOPER_NAME
+                    }
+                }
+
+                scm {
+                    url = POM_SCM_URL
+                    connection = POM_SCM_CONNECTION
+                    developerConnection = POM_SCM_DEV_CONNECTION
+                }
+
+                licenses {
+                    license {
+                        name = POM_LICENCE_NAME
+                        url = POM_LICENCE_URL
+                        distribution = POM_LICENCE_DIST
+                    }
+                }
+            }
+        }
+    }
+
+    repositories {
+        // When a dry-run location is provided, a publish task is created which allows us to publish to the specified
+        // dry-run location on the local machine. This allows us to safely test Maven pushes without affecting real
+        // repositories.
+        //
+        // To supply this property, either pass it in as a command-line argument to gradlew, or define it in
+        // ~/.gradle/gradle.properties, e.g.; dryRunLocation=/home/users/dryrunmavenrepo/
+        final def dryRunLocation = findProperty('dryRunLocation')?.toString() ?: null
+
+        if (dryRunLocation != null) {
+            maven {
+                name = 'dryrun'
+                url = "file://$dryRunLocation"
+            }
+        }
+
+        maven {
+            url = !version.contains("SNAPSHOT")
+                    ? 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+                    : 'https://oss.sonatype.org/content/repositories/snapshots/'
+
+            credentials {
+                username findProperty('NEXUS_USERNAME')?.toString() ?: ''
+                password findProperty('NEXUS_PASSWORD')?.toString() ?: ''
+            }
+        }
+    }
+}
+
+signing {
+    required {
+        !version.contains("SNAPSHOT") && gradle.taskGraph.hasTask('publish')
+    }
+
+    sign publishing.publications.mavenJava
+}
+
+javadoc {
+    title = "Edinburgh Bus Tracker API"
+
+    options {
+        if (JavaVersion.current().isJava9Compatible()) {
+            addBooleanOption('html5', true)
+        }
+
+        links("https://docs.oracle.com/javase/8/docs/api/")
+        links("https://www.javadoc.io/doc/com.google.code.gson/gson/latest/com.google.gson/")
+        links("https://square.github.io/retrofit/2.x/retrofit/")
+    }
 }
 
 dependencies {
@@ -36,7 +129,3 @@ dependencies {
 
     testImplementation "junit:junit:$junitVersion"
 }
-
-apply from: 'javadoc.gradle'
-apply from: 'package-sources.gradle'
-apply from: '../gradle-mvn-push.gradle'
