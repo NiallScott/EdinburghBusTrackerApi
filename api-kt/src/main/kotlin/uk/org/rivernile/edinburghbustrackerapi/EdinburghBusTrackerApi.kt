@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 - 2022 Niall Scott
+ * Copyright 2022 Niall Scott
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
-include ':api',
-        'api-kt',
-        ':playground'
+package uk.org.rivernile.edinburghbustrackerapi
+
+interface EdinburghBusTrackerApi {
+
+}
