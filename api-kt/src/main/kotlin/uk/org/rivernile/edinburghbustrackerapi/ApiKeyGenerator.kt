@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Niall Scott
+ * Copyright 2023 Niall Scott
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,10 @@
 
 package uk.org.rivernile.edinburghbustrackerapi
 
-import java.math.BigInteger
-import java.security.MessageDigest
-import java.security.NoSuchAlgorithmException
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
+import kotlinx.datetime.toJavaInstant
+import okio.ByteString.Companion.encodeUtf8
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -30,7 +31,7 @@ import java.util.*
  *
  * Obtain an instance of this class by calling the constructor with the unhashed API key you were provided. To then
  * obtain the hashed API key to send with the API request, call the [getHashedApiKey] method. Assuming your unhashed
- * API key is valid and the [Date] object you supply is for the current time, then your request should succeed. Pay
+ * API key is valid and the [Instant] object you supply is for the current time, then your request should succeed. Pay
  * attention to any errors returned by the API.
  *
  * Longer explanation: hashed API keys must go through this transformation:
@@ -46,41 +47,38 @@ import java.util.*
  * @author Niall Scott
  */
 class ApiKeyGenerator(
-        private val unhashedKey: String) {
+    private val unhashedKey: String) {
 
     private val dateFormatter = SimpleDateFormat("yyyyMMddHH").apply {
         timeZone = TimeZone.getTimeZone("UTC")
     }
 
     /**
-     * Given the unhashed API key passed to the constructor and the passed [time] object, return a hashed API key that
-     * can be used with the Edinburgh Bus Tracker API.
+     * Given the unhashed API key passed to the constructor and the passed [instant] object, return a hashed API key
+     * that can be used with the Edinburgh Bus Tracker API.
      *
      * See the class header documentation for a longer explanation on how this works.
      *
-     * @param time Hashed API keys are time sensitive. Pass in a [Date] object that represents the time you want the
-     * hashed API key for. Most use cases will simply just pass in `Date()` here. Must not be `null`.
-     * @return A hashed API key, which uses the unhashed key provided to the constructor, and the [time] passed to this
-     * method. An empty [String] will be returned if there was a problem generating the key.
+     * The [hashedApiKey] property is more appropriate for most use cases.
+     *
+     * @param instant Hashed API keys are time sensitive. Pass in an [Instant] object that represents the time you want
+     * the hashed API key for. Most use cases will simply just pass in `Clock.System.now()` here. Must not be `null`.
+     * @return A hashed API key, which uses the unhashed key provided to the constructor, and the [instant] passed to
+     * this method.
+     * @see hashedApiKey
      */
-    fun getHashedApiKey(time: Date): String {
-        return try {
-            val md = MessageDigest.getInstance("MD5")
-            val combinedKey = unhashedKey + dateFormatter.format(time)
-
-            BigInteger(1, md.digest(combinedKey.toByteArray()))
-                    .toString(16)
-                    .padStart(32, '0')
-        } catch (ignored: NoSuchAlgorithmException) {
-            ""
-        }
+    fun getHashedApiKey(instant: Instant): String {
+        return (unhashedKey + dateFormatter.format(Date.from(instant.toJavaInstant())))
+            .encodeUtf8()
+            .md5()
+            .hex()
     }
 
     /**
-     * A convenience immutable property to get the API key. It calls [getHashedApiKey], passing in a [Date] object that
-     * uses the current system time. That is, it obtains a [Date] object by calling `Date()`.
+     * A convenience immutable property to get the API key. It calls [getHashedApiKey], passing in an [Instant] object
+     * that uses the current system time. That is, it obtains an [Instant] object by calling `Clock.System.now()`.
      *
      * @see getHashedApiKey
      */
-    val hashedApiKey: String get() = getHashedApiKey(Date())
+    val hashedApiKey: String get() = getHashedApiKey(Clock.System.now())
 }

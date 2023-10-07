@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 - 2022 Niall Scott
+ * Copyright 2018 - 2023 Niall Scott
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import uk.org.rivernile.edinburghbustrackerapi.ApiKeyGenerator;
 import uk.org.rivernile.edinburghbustrackerapi.EdinburghBusTrackerApi;
 import uk.org.rivernile.edinburghbustrackerapi.bustimes.BusTimes;
+import uk.org.rivernile.edinburghbustrackerapi.disruptions.Disruptions;
 import uk.org.rivernile.edinburghbustrackerapi.services.Services;
 import uk.org.rivernile.edinburghbustrackerapi.topoid.TopoId;
 
@@ -56,9 +57,11 @@ public class Main {
         doGetTopoId(api);
         doGetServices(api);
         doGetBusTimes(api);
+        doGetDisruptions(api);
     }
 
     private EdinburghBusTrackerApi createApi() {
+        @SuppressWarnings("KotlinInternalInJava")
         final OkHttpClient client = new OkHttpClient.Builder()
                 .connectTimeout(30, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS)
@@ -120,6 +123,22 @@ public class Main {
                 System.out.println(response.body());
             } else {
                 System.out.println("doGetBusTimes(): Failure response.");
+                System.out.println(response.errorBody());
+            }
+        } catch (IOException e) {
+            System.out.println("Failed to talk to server. Error = " + e);
+        }
+    }
+
+    private void doGetDisruptions(final EdinburghBusTrackerApi api) {
+        try {
+            final Response<Disruptions> response = api.getDisruptions(getKey(), null, 0).execute();
+
+            if (response.isSuccessful()) {
+                System.out.println("doGetDisruptions(): Success response.");
+                System.out.println(response.body());
+            } else {
+                System.out.println("doGetDisruptions(): Failure response.");
                 System.out.println(response.errorBody());
             }
         } catch (IOException e) {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 - 2022 Niall Scott
+ * Copyright 2023 Niall Scott
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
-include ':api',
-        'api-kt',
-        ':playground'
+package uk.org.rivernile.edinburghbustrackerapi.services
+
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class Services(
+    @SerialName("services") val services: List<Service>? = null,
+    @SerialName("faultcode") val faultCode: String? = null,
+    @SerialName("faultstring") val faultString: String? = null)

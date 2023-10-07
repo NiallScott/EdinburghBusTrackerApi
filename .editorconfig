@@ -1,0 +1,22 @@
+# http://editorconfig.org
+
+root = true
+
+[*]
+charset = utf-8
+trim_trailing_whitespace = true
+indent_style = space
+end_of_line = lf
+insert_final_newline = true
+
+[*.{kt,kts}]
+indent_size = 4
+ij_continuation_indent_size = 4
+ij_kotlin_allow_trailing_comma = false
+ij_kotlin_allow_trailing_comma_on_call_site = false
+
+[*.json]
+indent_size = 4
+
+[*.xml]
+indent_size = 4

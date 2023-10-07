@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 - 2022 Niall Scott
+ * Copyright 2018 - 2023 Niall Scott
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,35 +15,36 @@
  */
 
 plugins {
-    id 'java'
-    id 'application'
+    java
+    application
 }
 
-mainClassName = 'uk.org.rivernile.edinburghbustrackerapi.playground.Main'
-
-jar {
+java {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
+}
 
+val mainClassName = "uk.org.rivernile.edinburghbustrackerapi.playground.Main"
+
+application {
+    mainClass.set(mainClassName)
+}
+
+tasks.jar {
     manifest {
-        attributes "Main-Class": mainClassName
+        attributes(
+            "Main-Class" to mainClassName)
     }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation project(path: ':api')
+    implementation(project(":api"))
 
     // Retrofit
-    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
-    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.gson)
 
     // Okhttp
-    implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
-
-    // Gson
-    implementation "com.google.code.gson:gson:$gsonVersion"
-
-    testImplementation "junit:junit:$junitVersion"
+    implementation(libs.okhttp)
 }
