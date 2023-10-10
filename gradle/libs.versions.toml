@@ -16,5 +16,6 @@ retrofit-converter-kotlin-serialization = { module = "com.jakewharton.retrofit:r
 junit = { module = "junit:junit", version = "4.13.2" }
 
 [plugins]
+dokka = { id = "org.jetbrains.dokka", version = "1.9.0" }
 kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

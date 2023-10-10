@@ -41,8 +41,8 @@ import uk.org.rivernile.edinburghbustrackerapi.topoid.TopoId
  * All the methods have a `hashedApiKey` parameter. Use the [ApiKeyGenerator] class to obtain a hashed API key and pass
  * the resulting key in to the method you wish to use.
  *
- * Example
- * -------
+ * ### Example
+ *
  * Firstly, set up Okhttp and Retrofit;
  *
  * ```
@@ -50,13 +50,55 @@ import uk.org.rivernile.edinburghbustrackerapi.topoid.TopoId
  *     // Any other Okhttp customisations you wish to make should go here.
  *     .build()
  *
- *     // TODO: finish Javadoc
+ * val json = Json { ignoreUnknownKeys = true } // From Kotlin Serialization.
+ * val converterFactory = json.asConverterFactory("application/json".toMediaType())
  *
  * val retrofit = Retrofit.Builder()
  *     .baseUrl("http://ws.mybustracker.co.uk/")
  *     .client(client)
- *     .addConverterFactory
+ *     .addConverterFactory(converterFactory)
+ *     .build()
  * ```
+ *
+ * Now obtain a concrete implementation of this class through your [retrofit2.Retrofit] instance;
+ *
+ * ```
+ * val api = retrofit.create<EdinburghBusTrackerApi>()
+ * ```
+ *
+ * Create an instance of [ApiKeyGenerator] with your unhashed key, supplied to you when you signed up for the Edinburgh
+ * Bus Tracker API. You can keep this instance for the lifetime of your application;
+ *
+ * ```
+ * val keyGenerator = ApiKeyGenerator("your API key goes here)
+ * ```
+ *
+ * You now have al the bits you need to make an API call. Here's an example;
+ *
+ * ```
+ * // Get the current topology ID
+ * try {
+ *     val response = api.getTopoId(apiKeyForRequest, null)
+ *
+ *     if (response.isSuccessful) {
+ *         response
+ *             .body()
+ *             ?.topoId
+ *             ?.let {
+ *                 // Handle the success case
+ *             }
+ *             ?: // Handle the error case
+ *     } else {
+ *         // Handle error case
+ *     }
+ * } catch (e: IOException) {
+ *     // Deal with the thrown IOException.
+ * } catch (e: SerializationException) {
+ *     // Deal with the thrown SerializationException.
+ * }
+ * ```
+ *
+ * See the project README.md for more details.
  *
  * @author Niall Scott
  * @see ApiKeyGenerator
@@ -66,23 +108,19 @@ interface EdinburghBusTrackerApi {
     companion object {
 
         /**
-         * Integer constant for [.getDisruptions] to specify that all disruptions should be
-         * returned.
+         * Integer constant for [getDisruptions] to specify that all disruptions should be returned.
          */
         const val DISRUPTION_TYPE_ALL = 0
         /**
-         * Integer constant for [.getDisruptions] to specify that only network disruptions
-         * should be returned.
+         * Integer constant for [getDisruptions] to specify that only network disruptions should be returned.
          */
         const val DISRUPTION_TYPE_NETWORK = 1
         /**
-         * Integer constant for [.getDisruptions] to specify that only service disruptions
-         * should be returned.
+         * Integer constant for [getDisruptions] to specify that only service disruptions should be returned.
          */
         const val DISRUPTION_TYPE_SERVICE = 2
         /**
-         * Integer constant for [.getDisruptions] to specify that only bus stop disruptions
-         * should be returned.
+         * Integer constant for [getDisruptions] to specify that only bus stop disruptions should be returned.
          */
         const val DISRUPTION_TYPE_BUS_STOP = 3
     }
@@ -96,8 +134,8 @@ interface EdinburghBusTrackerApi {
      */
     @GET("?module=json&function=getTopoId")
     suspend fun getTopoId(
-            @Query("key") hashedApiKey: String,
-            @Query("operatorId") operatorId: String?): Response<TopoId>
+        @Query("key") hashedApiKey: String,
+        @Query("operatorId") operatorId: String?): Response<TopoId>
 
     /**
      * Get details of all services known by the Edinburgh Bus Tracker API.
@@ -108,8 +146,8 @@ interface EdinburghBusTrackerApi {
      */
     @GET("?module=json&function=getServices")
     suspend fun getServices(
-            @Query("key") hashedApiKey: String,
-            @Query("operatorId") operatorId: String?): Response<Services>
+        @Query("key") hashedApiKey: String,
+        @Query("operatorId") operatorId: String?): Response<Services>
 
     /**
      * Get the service route lines for a given [serviceReference].
@@ -122,9 +160,9 @@ interface EdinburghBusTrackerApi {
      */
     @GET("?module=json&function=getServicePoints")
     suspend fun getServicePoints(
-            @Query("key") hashedApiKey: String,
-            @Query("operatorId") operatorId: String?,
-            @Query("ref") serviceReference: String?): Response<ServicePoints>
+        @Query("key") hashedApiKey: String,
+        @Query("operatorId") operatorId: String?,
+        @Query("ref") serviceReference: String?): Response<ServicePoints>
 
     /**
      * Get details of all destinations known by the Edinburgh Bus Tracker API.
@@ -135,8 +173,8 @@ interface EdinburghBusTrackerApi {
      */
     @GET("?module=json&function=getDests")
     suspend fun getDestinations(
-            @Query("key") hashedApiKey: String,
-            @Query("operatorId") operatorId: String?): Response<Destinations>
+        @Query("key") hashedApiKey: String,
+        @Query("operatorId") operatorId: String?): Response<Destinations>
 
     /**
      * Get details of all bus stops known by the Edinburgh Bus Tracker API.
@@ -147,8 +185,8 @@ interface EdinburghBusTrackerApi {
      */
     @GET("?module=json&function=getBusStops")
     suspend fun getBusStops(
-            @Query("key") hashedApiKey: String,
-            @Query("operatorId") operatorId: String?): Response<BusStops>
+        @Query("key") hashedApiKey: String,
+        @Query("operatorId") operatorId: String?): Response<BusStops>
 
     /**
      * Get details of disruptions.
@@ -161,9 +199,9 @@ interface EdinburghBusTrackerApi {
      */
     @GET("?module=json&function=getDisruptions")
     suspend fun getDisruptions(
-            @Query("key") hashedApiKey: String,
-            @Query("operatorId") operatorId: String?,
-            @Query("type") type: Int?): Response<Disruptions>
+        @Query("key") hashedApiKey: String,
+        @Query("operatorId") operatorId: String?,
+        @Query("type") type: Int?): Response<Disruptions>
 
     /**
      * Get details of diversions.
@@ -176,10 +214,10 @@ interface EdinburghBusTrackerApi {
      */
     @GET("?module=json&function=getDiversions")
     suspend fun getDiversions(
-            @Query("key") hashedApiKey: String,
-            @Query("operatorId") operatorId: String?,
-            @Query("refService") serviceReference: String?,
-            @Query("day") day: Int?): Response<Diversions>
+        @Query("key") hashedApiKey: String,
+        @Query("operatorId") operatorId: String?,
+        @Query("refService") serviceReference: String?,
+        @Query("day") day: Int?): Response<Diversions>
 
     /**
      * Get the diversions points for a given [diversionId].
@@ -191,9 +229,9 @@ interface EdinburghBusTrackerApi {
      */
     @GET("?module=json&function=getDiversionPoints")
     suspend fun getDiversionPoints(
-            @Query("key") hashedApiKey: String,
-            @Query("operatorId") operatorId: String?,
-            @Query("diversionId") diversionId: String?): Response<DiversionPoints>
+        @Query("key") hashedApiKey: String,
+        @Query("operatorId") operatorId: String?,
+        @Query("diversionId") diversionId: String?): Response<DiversionPoints>
 
     /**
      * Get bus times for a given [stopId]. This is a simpler version of the call, mostly using default values. The
@@ -207,9 +245,9 @@ interface EdinburghBusTrackerApi {
      */
     @GET("?module=json&function=getBusTimes")
     suspend fun getBusTimes(
-            @Query("key") hashedApiKey: String,
-            @Query("nb") numberOfDepartures: Int?,
-            @Query("stopId") stopId: String): Response<BusTimes>
+        @Query("key") hashedApiKey: String,
+        @Query("nb") numberOfDepartures: Int?,
+        @Query("stopId") stopId: String): Response<BusTimes>
 
     /**
      * Get bus times for up to 5 stops. This is a simpler version of the call, mostly using default values. The more
@@ -227,13 +265,13 @@ interface EdinburghBusTrackerApi {
      */
     @GET("?module=json&function=getBusTimes")
     suspend fun getBusTimes(
-            @Query("key") hashedApiKey: String,
-            @Query("nb") numberOfDepartures: Int?,
-            @Query("stopId1") stopId1: String,
-            @Query("stopId2") stopId2: String?,
-            @Query("stopId3") stopId3: String?,
-            @Query("stopId4") stopId4: String?,
-            @Query("stopId5") stopId5: String?): Response<BusTimes>
+        @Query("key") hashedApiKey: String,
+        @Query("nb") numberOfDepartures: Int?,
+        @Query("stopId1") stopId1: String,
+        @Query("stopId2") stopId2: String?,
+        @Query("stopId3") stopId3: String?,
+        @Query("stopId4") stopId4: String?,
+        @Query("stopId5") stopId5: String?): Response<BusTimes>
 
     /**
      * Get bus times for a given [stopId]. This is a more enhanced version of the call, allowing the user to customise
@@ -255,14 +293,14 @@ interface EdinburghBusTrackerApi {
      */
     @GET("?module=json&function=getBusTimes")
     suspend fun getBusTimes(
-            @Query("key") hashedApiKey: String,
-            @Query("nb") numberOfDepartures: Int?,
-            @Query("day") day: Int?,
-            @Query("time") time: String?,
-            @Query("stopId") stopId: String,
-            @Query("refService") serviceReference: String?,
-            @Query("refDest") destinationReference: String?,
-            @Query("operatorId") operatorId: String?): Response<BusTimes>
+        @Query("key") hashedApiKey: String,
+        @Query("nb") numberOfDepartures: Int?,
+        @Query("day") day: Int?,
+        @Query("time") time: String?,
+        @Query("stopId") stopId: String,
+        @Query("refService") serviceReference: String?,
+        @Query("refDest") destinationReference: String?,
+        @Query("operatorId") operatorId: String?): Response<BusTimes>
 
     /**
      * Get bus times for up to 5 stops. This is a more enhanced version of the call, allowing the user to customise all
@@ -312,30 +350,30 @@ interface EdinburghBusTrackerApi {
      */
     @GET("?module=json&function=getBusTimes")
     suspend fun getBusTimes(
-            @Query("key") hashedApiKey: String,
-            @Query("nb") numberOfDepartures: Int?,
-            @Query("day") day: Int?,
-            @Query("time") time: String?,
-            @Query("stopId1") stopId1: String,
-            @Query("refService1") serviceReference1: String?,
-            @Query("refDest1") destinationReference1: String?,
-            @Query("operatorId1") operatorId1: String?,
-            @Query("stopId2") stopId2: String?,
-            @Query("refService2") serviceReference2: String?,
-            @Query("refDest2") destinationReference2: String?,
-            @Query("operatorId2") operatorId2: String?,
-            @Query("stopId3") stopId3: String?,
-            @Query("refService3") serviceReference3: String?,
-            @Query("refDest3") destinationReference3: String?,
-            @Query("operatorId3") operatorId3: String?,
-            @Query("stopId4") stopId4: String?,
-            @Query("refService4") serviceReference4: String?,
-            @Query("refDest4") destinationReference4: String?,
-            @Query("operatorId4") operatorId4: String?,
-            @Query("stopId5") stopId5: String?,
-            @Query("refService5") serviceReference5: String?,
-            @Query("refDest5") destinationReference5: String?,
-            @Query("operatorId5") operatorId5: String?): Response<BusTimes>
+        @Query("key") hashedApiKey: String,
+        @Query("nb") numberOfDepartures: Int?,
+        @Query("day") day: Int?,
+        @Query("time") time: String?,
+        @Query("stopId1") stopId1: String,
+        @Query("refService1") serviceReference1: String?,
+        @Query("refDest1") destinationReference1: String?,
+        @Query("operatorId1") operatorId1: String?,
+        @Query("stopId2") stopId2: String?,
+        @Query("refService2") serviceReference2: String?,
+        @Query("refDest2") destinationReference2: String?,
+        @Query("operatorId2") operatorId2: String?,
+        @Query("stopId3") stopId3: String?,
+        @Query("refService3") serviceReference3: String?,
+        @Query("refDest3") destinationReference3: String?,
+        @Query("operatorId3") operatorId3: String?,
+        @Query("stopId4") stopId4: String?,
+        @Query("refService4") serviceReference4: String?,
+        @Query("refDest4") destinationReference4: String?,
+        @Query("operatorId4") operatorId4: String?,
+        @Query("stopId5") stopId5: String?,
+        @Query("refService5") serviceReference5: String?,
+        @Query("refDest5") destinationReference5: String?,
+        @Query("operatorId5") operatorId5: String?): Response<BusTimes>
 
     /**
      * Get journey times for a given [journeyId] departing from a given [stopId].
@@ -351,11 +389,11 @@ interface EdinburghBusTrackerApi {
      */
     @GET("?module=json&function=getJourneyTimes")
     suspend fun getJourneyTimes(
-            @Query("key") hashedApiKey: String,
-            @Query("stopId") stopId: String?,
-            @Query("journeyId") journeyId: String?,
-            @Query("busId") busId: String?,
-            @Query("operatorId") operatorId: String?,
-            @Query("day") day: Int?,
-            @Query("mode") mode: Int?): Response<JourneyTimes>
+        @Query("key") hashedApiKey: String,
+        @Query("stopId") stopId: String?,
+        @Query("journeyId") journeyId: String?,
+        @Query("busId") busId: String?,
+        @Query("operatorId") operatorId: String?,
+        @Query("day") day: Int?,
+        @Query("mode") mode: Int?): Response<JourneyTimes>
 }

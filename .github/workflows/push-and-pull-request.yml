@@ -21,3 +21,4 @@ jobs:
           :api:test
           :api-kt:test
           :api:javadoc
+          :api-kt:dokkaHtml

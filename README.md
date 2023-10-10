@@ -1,33 +1,70 @@
 [![GitHub Actions](https://github.com/NiallScott/EdinburghBusTrackerApi/actions/workflows/push-and-pull-request.yml/badge.svg)](https://github.com/NiallScott/EdinburghBusTrackerApi/actions/workflows/push-and-pull-request.yml)
 
-Edinburgh Bus Tracker API (Java)
-================================
+# Edinburgh Bus Tracker API (Java)
 
-A Java library which provides model objects and a RESTful interface to the Edinburgh Bus Tracker
+Java and Kotlin libraries which provide model objects and a RESTful interface to the Edinburgh Bus Tracker
 ([My Bus Tracker](http://mybustracker.co.uk/)) API.
 
-This library is based on [Retrofit 2](https://square.github.io/retrofit/) and
+These libraries are based on [Retrofit 2](https://square.github.io/retrofit/) and
 [Okhttp 4](http://square.github.io/okhttp/) provided by Square.
 
-This library is guaranteed to work on Android.
+These libraries are guaranteed to work on Android - please ensure you are using the latest Android tooling to guarantee
+compatibility.
 
-Obtaining
----------
+## Languages
 
-This library is available on Maven Central.
+### Java
+
+The Java library is written against Java 8.
+
+De-serialisation is performed by [Gson](https://github.com/google/gson).
+
+On Android environments, the build tools should automatically make the bytecode compatible with the minimum supported
+SDK version. As the Android tools only provide language support but not Java 8 library support (for example, the stream
+API), this library will be written with this in mind. More about Android Java 8 support can be found here:
+https://developer.android.com/studio/write/java8-support
+
+While this library is targeted at Android users, Kotlin users can use this library if they do not wish to use
+Coroutines, and/or they wish to use Gson instead.
+
+The Java version can be obtained from Maven Central.
 
 ```
 Group ID: uk.org.rivernile.edinburghbustrackerapi
 Artifact ID: api
-Version: 1.2.0
+Version: 1.3.0
 ```
 
 For example, to bring the library in as a Gradle dependency;
 
-`implementation 'uk.org.rivernile.edinburghbustrackerapi:api:1.2.0'`
+`implementation 'uk.org.rivernile.edinburghbustrackerapi:api:1.3.0'`
 
-Accessing the API
------------------
+### Kotlin
+
+The Kotlin version of the library is distributed as a separate artifact as it has different dependencies to the Java
+version.
+
+De-serialisation is performed by [Kotlin Serialization](https://github.com/Kotlin/kotlinx.serialization). Also, this
+library uses [Kotlin Coroutines](https://github.com/Kotlin/kotlinx.coroutines) which makes it incompatible with Java
+code.
+
+On Android environments, please ensure you are using the latest tooling.
+
+Only Kotlin on the JVM is supported due to the dependence upon Retrofit.
+
+The Kotlin version can be obtained from Maven Central.
+
+```
+Group ID: uk.org.rivernile.edinburghbustrackerapi
+Artifact ID: api-kt
+Version: 1.3.0
+```
+
+For example, to bring the library in as a Gradle dependency;
+
+`implementation 'uk.org.rivernile.edinburghbustrackerapi:api-kt:1.3.0'`
+
+## Accessing the API
 
 This is an unofficial library used to access the API. As such, the maintainer is unable to help you gain access.
 
@@ -36,8 +73,7 @@ However, the official place to request an API key is here: http://mybustracker.c
 Please don't contact the library maintainer for help accessing the API - I am unable to help beyond what's written in
 this README.
 
-Usage examples
---------------
+## Usage examples
 
 While this library is opinionated about what HTTP libraries should be used, it's not opinionated about how they should
 be used. As such, there is no fancy wrapper around Retrofit. Just use Retrofit how you would normally use it.
@@ -45,8 +81,16 @@ be used. As such, there is no fancy wrapper around Retrofit. Just use Retrofit h
 All interactions with the My Bus Tracker API must include a hashed API key. The unhashed version is provided to you when
 you sign up for access to the API. A utility class has been included in this library to hash the key correctly for you;
 
+#### Java
+
 ```java
 final ApiKeyGenerator keyGenerator = new ApiKeyGenerator("<your API key goes here>");
+```
+
+#### Kotlin
+
+```kotlin
+val keyGenerator = ApiKeyGenerator("<your API key goes here>")
 ```
 
 This object may live for the lifetime of your application. Infact, it's preferable to only create it once and then
@@ -54,13 +98,21 @@ dependency inject it to wherever it is required.
 
 To get the hashed API key, then this is all that's required;
 
+#### Java
+
 ```java
-final Date timeNow = new Date();
-final String apiKeyForRequest = keyGenerator.getHashedApiKey(timeNow);
+final String apiKeyForRequest = keyGenerator.getHashedApiKey();
+```
+
+#### Kotlin
+```kotlin
+val apiKeyForRequest = keyGenerator.hashedApiKey
 ```
 
 To get an instance of `EdinburghBusTrackerApi`, which is the Retrofit service instance used to access the API, then the
 follow setup is required (tip: this should be used in tandem with your dependency injection framework);
+
+#### Java
 
 ```java
 final OkHttpClient client = new OkHttpClient.Builder()
@@ -76,8 +128,30 @@ final Retrofit retrofit = new Retrofit.Builder()
 final EdinburghBusTrackerApi api = retrofit.create(EdinburghBusTrackerApi.class);
 ```
 
-Now we have the ability to talk with the API, here's a couple of examples (synchronous calls are used for the examples,
-but asynchronous calls will work fine too);
+#### Kotlin
+
+```kotlin
+val client = OkHttpClient.Builder()
+    // Any other Okhttp customisations you wish to make should go here.
+    .build()
+
+val json = Json { ignoreUnknownKeys = true }
+
+val retrofit = Retrofit.Builder()
+    .baseUrl("http://ws.mybustracker.co.uk/")
+    .client(client)
+    .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
+    .build()
+
+val api = retrofit.create<EdinburghBusTrackerApi>()
+```
+
+Now we have the ability to talk with the API, here's a couple of examples (synchronous calls are used for the Java
+examples, but asynchronous calls will work fine too);
+
+### Get the topology ID
+
+#### Java
 
 ```java
 // Get the current topology ID
@@ -86,7 +160,7 @@ try {
 
     if (response.isSuccessful()) {
         final TopoId topoId = response.body();
-        
+
         if (topoId.getTopoId() != null) {
             // Now do whatever you want to do with this object, i.e. call some method.
             doOnTopoIdLoaded(topoId.getTopoId());
@@ -101,15 +175,45 @@ try {
 }
 ```
 
+#### Kotlin
+
+```kotlin
+try {
+    // The next line is a coroutine call. Retrofit runs this on Dispatchers.IO for you already.
+    val response = api.getTopoId(keyGenerator.hashedApiKey, null)
+
+    if (response.isSuccessful) {
+        val topoId = response.body()
+
+        if (topoId.topoId != null) {
+            // Now do whatever you want to do with this object, i.e. call some method.
+            doOnTopoIdLoaded(topoId.topoId)
+        } else {
+            handleError(topoId.faultCode)
+        }
+    } else {
+        // Handle the error case.
+    }
+} catch (e: IOException) {
+    // Deal with the thrown IOException.
+} catch (e: SerializationException) {
+    // Deal with the thrown SerializationException.
+}
+```
+
+### Get bus times
+
+#### Java
+
 ```java
 // Get bus times
 try {
     // Request 4 departures for each service at stop with code "123456".
     final Response<BusTimes> response = api.getBusTimes(apiKeyForRequest, 4, "123456").execute();
-    
+
     if (response.isSuccessful()) {
         final BusTimes busTimes = response.body();
-        
+
         if (busTimes.getBusTimes() != null) {
             // Now do whatever you want to do with this object, i.e. call some method.
             doOnBusTimesLoaded(busTimes);
@@ -124,20 +228,47 @@ try {
 }
 ```
 
-Error handling
---------------
+#### Kotlin
+
+```kotlin
+try {
+    // Request 4 departures for each service at stop with code "123456".
+    // The next line is a coroutine call. Retrofit runs this on Dispatchers.IO for you already.
+    val response = api.getBusTimes(keyGenerator.hashedApiKey, 4, "123456")
+
+    if (response.isSuccessful) {
+        val busTimes = response.body()
+
+        if (busTimes.busTimes != null) {
+            // Now do whatever you want to do with this object, i.e. call some method.
+            doOnBusTimesLoaded(busTimes)
+        } else {
+            handleError(busTimes.faultCode)
+        }
+    } else {
+        // Handle error here.
+    }
+} catch (e: IOException) {
+    // Deal with the thrown IOException.
+} catch (e: SerializationException) {
+    // Deal with the thrown SerializationException.
+}
+```
+
+## Error handling
 
 Unfortunately, the Edinburgh Bus Tracker API is not strictly RESTful. All responses from the API are returned as HTTP
 200 OK, regardless if the request succeeded or failed. This means that the response types returned from the methods in
 the `EdinburghBusTrackerApi` interface return model objects which encapsulate both success and failure cases.
 
-All of these root model objects (such as `BusTimes`, `BusStops` etc) contain two methods;
+All of these root model objects (such as `BusTimes`, `BusStops` etc) contain two methods/properties;
 
-- `getFaultCode()`: A string constant defining the error type. See the `FaultCode` class for the enumeration of these
-  errors. This class also has a method, `convertFromString(String)` to convert the error in to its friendly enum type.
-- `getFaultString()`: A string to describe the error in more detail. This may help during development or debugging to
-  work out the root cause of the error. However, these errors are unfriendly to show to end users.
-  
+- `getFaultCode() / faultCode`: A string constant defining the error type. See the `FaultCode` class for the enumeration
+  of these errors. This class also has a method, `convertFromString(String)` to convert the error in to its friendly
+  enum type.
+- `getFaultString() / faultString`: A string to describe the error in more detail. This may help during development or
+  debugging to work out the root cause of the error. However, these errors are unfriendly to show to end users.
+
 There's a few classes of errors to be aware of;
 
 - You may receive an `IOException`. This means a network-level error has occurred. This should be handled appropriately.
@@ -146,20 +277,22 @@ There's a few classes of errors to be aware of;
   be called as this could possibly be the case, and your implementation should guard against this. It is unlikely to
   yield any interesting information to debug with. It is possible this behaviour may be changed in the future. As such,
   this library will be updated when it does.
-- The `getFaultCode()` method, as discussed above, may be non-`null`. This should be handled.
+- The `getFaultCode() / faultCode` method/property, as discussed above, may be non-`null`. This should be handled.
 
 Using the synchronous access method for Retrofit, your typical error handling may look like this;
+
+#### Java (synchronous)
 
 ```java
 // Get bus times
 try {
     // Request 4 departures for each service at stop with code "123456".
     final Response<BusTimes> response = api.getBusTimes(apiKeyForRequest, 4, "123456").execute();
-    
+
     if (response.isSuccessful()) {
         final BusTimes busTimes = response.body();
         final String faultCode = busTimes.getFaultCode();
-        
+
         if (faultCode == null) {
             // Now do whatever you want to do with this object, i.e. call some method.
             doOnBusTimesLoaded(busTimes);
@@ -176,7 +309,7 @@ try {
 }
 ```
 
-And the asynchronous method;
+#### Java (asynchronous)
 
 ```java
 // Get bus times
@@ -186,7 +319,7 @@ api.getBusTimes(apiKeyForRequest, 4, "123456").enqueue(new Callback<BusTimes>() 
         if (response.isSuccessful()) {
             final BusTimes busTimes = response.body();
             final String faultCode = busTimes.getFaultCode();
-            
+
             if (faultCode == null) {
                 // Now do whatever you want to do with this object, i.e. call some method.
                 doOnBusTimesLoaded(busTimes);
@@ -198,7 +331,7 @@ api.getBusTimes(apiKeyForRequest, 4, "123456").enqueue(new Callback<BusTimes>() 
             handleGenericError();
         }
     }
-    
+
     @Override
     public void onFailure(final Call<BusTimes> call, final Throwable t) {
         // This is called when a network-level or system error has occurred. This should be handled.
@@ -207,32 +340,44 @@ api.getBusTimes(apiKeyForRequest, 4, "123456").enqueue(new Callback<BusTimes>() 
 });
 ```
 
-Java version
-------------
+#### Kotlin (Coroutines)
 
-This library is written against Java 8.
+```kotlin
+// Get bus times
+try {
+    // Request 4 departures for each service at stop with code "123456".
+    val response = api.getBusTimes(apiKeyForRequest, 4, "123456")
 
-On Android environments, the build tools should automatically make the bytecode compatible with the minimum supported
-SDK version. As the Android tools only provide language support but not Java 8 library support (for example, the stream
-API), this library will be written with this in mind. More about Android Java 8 support can be found here:
-https://developer.android.com/studio/write/java8-support
+    if (response.isSuccessful) {
+        val busTimes = response.body()
+        val faultCode = busTimes.faultCode
 
-Kotlin?
--------
+        if (faultCode == null) {
+            // Now do whatever you want to do with this object, i.e. call some method.
+            doOnBusTimesLoaded(busTimes)
+        } else {
+            handleApiError(faultCode)
+        }
+    } else {
+        // This isn't really expected, so perhaps handle it generically? It's up to you.
+        handleGenericError()
+    }
+} catch (e: IOException) {
+    // This is called when a network-level error has occurred. This should be handled.
+    handleIoError(e)
+} catch (e: SerializationException) {
+    // This is called when the data could not be de-serialised. This should be handled.
+    handleDeserialisationError(e)
+}
+```
 
-This library should work just fine with Kotlin. If there's any issue, then please report it.
+## Javadoc / Kotlin Doc (Dokka)
 
-The reason the library was not written in Kotlin is to keep it lightweight. Kotlin requires its standard library is
-included as a dependency wherever it's used. While this would be fine within codebases where Kotlin is already used, it
-would bloat up a deployment if Kotlin is not being used there.
+Java: https://www.javadoc.io/doc/uk.org.rivernile.edinburghbustrackerapi/api/latest/index.html
 
-Javadoc
--------
+Kotlin: https://www.javadoc.io/doc/uk.org.rivernile.edinburghbustrackerapi/api-kt/latest/index.html
 
-There is no Javadoc yet. This will become available later.
-
-Public interfaces (and ongoing maintenance)
--------------------------------------------
+## Public interfaces (and ongoing maintenance)
 
 Unlike most libraries you will find, this library will not make any attempt to be backwards compatible to any previous
 release. So if the Edinburgh Bus Tracker API changes, then so does this library's public interfaces. This will be
@@ -251,24 +396,25 @@ In terms of ongoing maintenance, it will be endeavoured to update this library a
 Edinburgh Bus Tracker API changes have been made, but given this is a free, open source library, there is no obligation
 on the author to do this or do it within a given time.
 
-Project structure
------------------
+## Project structure
 
-There are two modules in this project;
+There are four modules in this project;
 
-- `:api`: This is the distributed library.
-- `:playground`: This is a module used to play with the API module to test it out and make sure it works with the
+- `:api`: This is the distributed Java library.
+- `:api-kt`: This is the distributed Kotlin library.
+- `:playground`: This is a module used to play with the Java API module to test it out and make sure it works with the
   Edinburgh Bus Tracker API. It is not distributed with the library.
-  
-In the `:api` module, the top-level package is `uk.org.rivernile.edinburghbustrackerapi`. The classes in this package
-are used as entry-points and utility classes. In the child packages are the model objects returned by the API calls,
-organised in to a child package per API method.
+- `:playground-kt`: This is a module used to play with the Kotlin API module to test it out and make sure it works with
+  the Edinburgh Bus Tracker API. It is not distributed with the library.
 
-License
--------
+In the `:api` and `:api-kt` modules, the top-level package is `uk.org.rivernile.edinburghbustrackerapi`. The classes in
+this package are used as entry-points and utility classes. In the child packages are the model objects returned by the
+API calls, organised in to a child package per API method.
+
+## License
 
 ```
-Copyright 2018 Niall Scott
+Copyright 2018 - 2023 Niall Scott
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

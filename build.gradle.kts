@@ -18,6 +18,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed, possibly in Gradle 8.1
 plugins {
+    alias(libs.plugins.dokka) apply false
     alias(libs.plugins.kotlin) apply false
     alias(libs.plugins.kotlin.serialization) apply false
     base

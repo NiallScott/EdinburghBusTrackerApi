@@ -14,18 +14,22 @@
  * limitations under the License.
  */
 
+import org.jetbrains.dokka.gradle.DokkaTask
+import java.net.URL
+
 plugins {
     `java-library`
     kotlin("jvm")
     id("kotlinx-serialization")
     id("maven-publish")
     id("signing")
+    id("org.jetbrains.dokka")
 }
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
-    //withJavadocJar()
+    withJavadocJar()
     withSourcesJar()
 }
 
@@ -43,6 +47,29 @@ publishing {
             }
         }
     }
+}
+
+tasks.withType<DokkaTask>().configureEach {
+    moduleName.set("Edinburgh Bus Tracker API - Kotlin")
+
+    dokkaSourceSets.configureEach {
+        externalDocumentationLink {
+            url.set(URL("https://kotlinlang.org/api/kotlinx.serialization/"))
+        }
+
+        externalDocumentationLink {
+            url.set(URL("https://kotlinlang.org/api/kotlinx.coroutines/"))
+        }
+
+        externalDocumentationLink {
+            url.set(URL("https://kotlinlang.org/api/kotlinx-datetime/"))
+            packageListUrl.set(URL("https://kotlinlang.org/api/kotlinx-datetime/kotlinx-datetime/package-list"))
+        }
+    }
+}
+
+tasks.named<Jar>("javadocJar") {
+    from(tasks.named("dokkaHtml"))
 }
 
 dependencies {
