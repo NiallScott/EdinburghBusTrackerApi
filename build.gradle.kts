@@ -101,16 +101,20 @@ subprojects {
 
     plugins.withType<SigningPlugin>().configureEach {
         extensions.configure<SigningExtension> {
-            isRequired = !version.toString().endsWith("SNAPSHOT")
+            if (!version.toString().endsWith("SNAPSHOT")) {
+                isRequired = true
 
-            project
-                .extensions
-                .findByType<PublishingExtension>()
-                ?.publications
-                ?.getByName("release")
-                ?.let {
-                    sign(it)
-                }
+                project
+                    .extensions
+                    .findByType<PublishingExtension>()
+                    ?.publications
+                    ?.getByName("release")
+                    ?.let {
+                        sign(it)
+                    }
+            } else {
+                isRequired = false
+            }
         }
     }
 }
