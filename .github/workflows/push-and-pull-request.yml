@@ -15,6 +15,7 @@ jobs:
       - name: Build
         run: >
           ./gradlew
+          --no-daemon
           clean
           :api:assemble
           :api-kt:assemble
@@ -22,3 +23,5 @@ jobs:
           :api-kt:test
           :api:javadoc
           :api-kt:dokkaHtml
+        env:
+          JAVA_OPTS: '-Xmx4096m'
